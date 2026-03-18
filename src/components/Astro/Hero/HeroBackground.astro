@@ -4,8 +4,6 @@
 <canvas id="hero-background-canvas" class="absolute inset-0 w-full h-full"></canvas>
 
 <script>
-  import type { Column } from "./HeroBackground.types";
-
   function debounce<T extends (...args: unknown[]) => void>(fn: T, delay: number): T {
     let timeout: ReturnType<typeof setTimeout>;
     return ((...args: unknown[]) => {
@@ -14,203 +12,57 @@
     }) as T;
   }
 
-  const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-
   const canvas = document.getElementById("hero-background-canvas");
-  if (canvas == null || !(canvas instanceof HTMLCanvasElement)) {
+  if (!(canvas instanceof HTMLCanvasElement)) {
     throw new Error("Canvas not found");
   }
 
-  const context = canvas.getContext("2d", { alpha: false });
+  const worker = new Worker(new URL("./HeroBackground.worker.ts", import.meta.url), { type: "module" });
 
-  function generateRandomNumber(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  function getContentBounds() {
+    const heroContent = document.getElementById("hero-content");
+    if (heroContent) {
+      const rect = heroContent.getBoundingClientRect();
+      return { contentLeft: rect.left, contentRight: rect.right };
+    }
+    return { contentLeft: 0, contentRight: 0 };
   }
 
-  let canvasWidth: number;
-  let canvasHeight: number;
-  let columns: Column[] = [];
-  let totalPossibleColumns: number;
+  const offscreen = canvas.transferControlToOffscreen();
+  const { contentLeft, contentRight } = getContentBounds();
 
-  function setCanvasSize() {
-    if (canvas == null || !(canvas instanceof HTMLCanvasElement)) {
-      throw new Error("Canvas not found");
-    }
-    canvasWidth = canvas.offsetWidth;
-    canvasHeight = canvas.offsetHeight;
+  worker.postMessage(
+    {
+      type: "init",
+      canvas: offscreen,
+      width: canvas.offsetWidth,
+      height: canvas.offsetHeight,
+      contentLeft,
+      contentRight,
+      rootFontSize: parseFloat(getComputedStyle(document.documentElement).fontSize),
+    },
+    [offscreen],
+  );
 
-    totalPossibleColumns = Math.floor((canvasWidth / rootFontSize) * 1.5);
-    refreshAllColunns();
-
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-  }
-
-  function generateColumn(pageLoad: boolean) {
-    const columnLength = generateRandomNumber(20, 50);
-    const columnChars = [];
-
-    const alphaIncrement = 0.4 / columnLength;
-    const gradient = [];
-
-    for (let i = 1; i <= columnLength; i++) {
-      const randAscii = generateRandomNumber(97, 122);
-      columnChars.push(String.fromCharCode(randAscii));
-      gradient.push(alphaIncrement * i);
-    }
-
-    let currentChar = 0;
-    let charsRemaining = columnLength;
-    if (pageLoad) {
-      const columnProgress = generateRandomNumber(0, columnLength);
-      if (Math.random() < 0.5) {
-        currentChar = columnProgress;
-      } else {
-        currentChar = columnLength;
-        charsRemaining = columnProgress;
-      }
-    }
-
-    const fontSize = generateRandomNumber(
-      0.75 * rootFontSize,
-      1.25 * rootFontSize,
-    );
-    const xCoord = generateRandomNumber(0, canvasWidth);
-    const yCoord = generateRandomNumber(-(canvasHeight * 0.25), canvasHeight);
-    const timeBetweenRenders = generateRandomNumber(200, 300);
-
-    columns.push({
-      chars: columnChars,
-      currentChar,
-      charsRemaining,
-      gradient,
-      fontSize,
-      xCoord,
-      yCoord,
-      prevRender: 0,
-      timeBetweenRenders,
+  window.addEventListener("resize", debounce(() => {
+    const { contentLeft, contentRight } = getContentBounds();
+    worker.postMessage({
+      type: "resize",
+      width: canvas.offsetWidth,
+      height: canvas.offsetHeight,
+      contentLeft,
+      contentRight,
     });
-  }
-
-  function renderColumn(ctx: CanvasRenderingContext2D, column: Column) {
-    const { chars, currentChar, charsRemaining, gradient, fontSize, xCoord, yCoord } = column;
-
-    const length = chars.length;
-    const fadeOutOffset = length - charsRemaining;
-
-    ctx.font = `${fontSize}px "Matrix", sans-serif`;
-    ctx.shadowBlur = fontSize * 0.75;
-
-    let lastColour = "";
-    for (let i = 0; i !== currentChar; i++) {
-      if (charsRemaining !== length && charsRemaining + i < length) continue;
-
-      const char = chars[i];
-      if (char == null) throw new Error(`Character at index ${i} is not defined`);
-
-      let colour: string;
-      if (i === currentChar - 1 && charsRemaining === length) {
-        colour = "#f9ab01";
-      } else {
-        const alpha = charsRemaining === length
-          ? (gradient[length - currentChar + i] ?? 0)
-          : (i < fadeOutOffset ? 0 : (gradient[i - fadeOutOffset] ?? 0));
-        if (alpha === 0) continue;
-        colour = `rgba(255, 255, 255, ${alpha})`;
-      }
-
-      if (colour !== lastColour) {
-        ctx.shadowColor = colour;
-        ctx.fillStyle = colour;
-        lastColour = colour;
-      }
-      ctx.fillText(char, xCoord, yCoord + fontSize * i);
-    }
-  }
-
-  function refreshAllColunns() {
-    columns = [];
-    for (let i = 0; i < totalPossibleColumns; i++) {
-      generateColumn(true);
-    }
-  }
-
-  let rafId: number | null = null;
-
-  function animate() {
-    if (canvas == null || !(canvas instanceof HTMLCanvasElement)) throw new Error("Canvas not found");
-    if (context == null || !(context instanceof CanvasRenderingContext2D)) throw new Error("Context not found");
-
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.textAlign = "center";
-    const now = window.performance.now();
-    const newColumns: Column[] = [];
-
-    if (columns.length < totalPossibleColumns) generateColumn(false);
-
-    for (const column of columns) {
-      const { chars, currentChar, charsRemaining, prevRender, timeBetweenRenders } = column;
-
-      if (now - prevRender < timeBetweenRenders) {
-        renderColumn(context, column);
-        newColumns.push(column);
-      } else {
-        renderColumn(context, column);
-        const newColumn = { ...column, prevRender: now };
-
-        if (currentChar < chars.length) {
-          newColumn.currentChar = newColumn.currentChar + 1;
-          newColumns.push(newColumn);
-        } else if (charsRemaining > 0) {
-          newColumn.charsRemaining = newColumn.charsRemaining - 1;
-          newColumns.push(newColumn);
-        }
-      }
-    }
-
-    columns = newColumns;
-    rafId = window.requestAnimationFrame(animate);
-  }
-
-  function startAnimation() {
-    if (rafId === null) {
-      rafId = window.requestAnimationFrame(animate);
-    }
-  }
-
-  function stopAnimation() {
-    if (rafId !== null) {
-      window.cancelAnimationFrame(rafId);
-      rafId = null;
-    }
-  }
-
-  setCanvasSize();
-  window.addEventListener("resize", debounce(setCanvasSize, 150));
+  }, 150));
 
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      stopAnimation();
-    } else {
-      startAnimation();
-    }
+    worker.postMessage({ type: document.hidden ? "visibilityPause" : "visibilityResume" });
   });
 
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
-      if (entry.isIntersecting) {
-        startAnimation();
-      } else {
-        stopAnimation();
-      }
+      worker.postMessage({ type: entry.isIntersecting ? "intersectionResume" : "intersectionPause" });
     }
   });
   observer.observe(canvas);
-
-  const matrixFont = new FontFace("Matrix", "url(/fonts/matrix.otf)");
-  matrixFont.load().then((font) => {
-    refreshAllColunns();
-    document.fonts.add(font);
-    startAnimation();
-  });
 </script>
