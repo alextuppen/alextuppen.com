@@ -1,4 +1,6 @@
 import BaseHead from "./BaseHead.astro";
+import BlogRecipeItem from "./BlogRecipeItem.astro";
+import BlogRecipeList from "./BlogRecipeList.astro";
 import Button from "./Button.astro";
 import Footer from "./Footer.astro";
 import FormattedDate from "./FormattedDate.astro";
@@ -11,6 +13,8 @@ export { Header } from "./Header";
 export { Hero } from "./Hero";
 export {
   BaseHead,
+  BlogRecipeItem,
+  BlogRecipeList,
   Button,
   Footer,
   FormattedDate,

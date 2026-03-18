@@ -42,7 +42,7 @@ if (blogPost == null) {
   transformedBlogPost = undefined;
 } else {
   transformedBlogPost = {
-    href: `/blog/${blogPost.slug}`,
+    href: `/blog/${blogPost.id}`,
     title: blogPost.data.title,
     src: blogPost.data.heroImage,
     alt: blogPost.data.heroImageText,
@@ -52,16 +52,16 @@ if (blogPost == null) {
 
 const experiences = await getCollection("experiences");
 const latestExperienceIndex = experiences.reduce(
-  (accumulator, currectExp, currectExpIndex) => {
+  (accumulator, currentExp, currentExpIndex) => {
     const accumulatorStartDate =
       experiences[accumulator]?.data.details.startDate;
-    const currentStartDate = currectExp.data.details.startDate;
+    const currentStartDate = currentExp.data.details.startDate;
 
     if (
       accumulatorStartDate == null ||
       accumulatorStartDate < currentStartDate
     ) {
-      return currectExpIndex;
+      return currentExpIndex;
     }
 
     return accumulator;
@@ -74,7 +74,7 @@ const latestExperience = experiences[latestExperienceIndex]?.data;
 <Root title={"Alex Tuppen"} description={SITE_DESCRIPTION}>
   <Hero />
   <Section>
-    <p>
+    <p class="text-white/70 leading-relaxed max-w-2xl text-center">
       Hello and welcome to my website, I'm a full stack developer based in
       London, UK. When I'm not building the next generation of web applications
       I am travelling the world with my girlfriend or experimenting in the
@@ -82,94 +82,74 @@ const latestExperience = experiences[latestExperienceIndex]?.data;
       effort. If you would like to get in touch please connect on LinkedIn or
       Instagram.
     </p>
+
     {
-      transformedRecipe != null ? (
+      transformedRecipe != null && (
         <>
           <Button variant="secondary" href="/recipes">
-            <h2 class="pageButton">Recipes</h2>
+            <h2 class="px-2 py-1">Recipes</h2>
           </Button>
-          <p>
+          <p class="text-white/70 leading-relaxed max-w-2xl text-center">
             I enjoy the challenge of creating recipes that are as easy to cook
             as possible. They are not complicated or fancy but they do use
             ingredients in standard UK supermarket package sizes and generate as
             little washing up as possible. You can see all of my recipes on the{" "}
-            <a href="/recipes">recipes page</a> or click the card below to go
-            straight to my favourite recipe. Please let me know what you think
-            if you cook one of them!
+            <a href="/recipes" class="text-primary hover:underline">
+              recipes page
+            </a>{" "}
+            or click the card below to go straight to my favourite recipe.
+            Please let me know what you think if you cook one of them!
           </p>
-          <ul class="list">
-            <BlogRecipeItem item={transformedRecipe} client:load />
+          <ul class="w-full max-w-2xl list-none p-0 m-0">
+            <BlogRecipeItem item={transformedRecipe} />
           </ul>
         </>
-      ) : null
+      )
     }
+
     {
-      transformedBlogPost != null ? (
+      transformedBlogPost != null && (
         <>
-          <Button variant={"secondary"} href="/blog">
-            <h2 class="pageButton">Blog</h2>
+          <Button variant="secondary" href="/blog">
+            <h2 class="px-2 py-1">Blog</h2>
           </Button>
-          <p>
+          <p class="text-white/70 leading-relaxed max-w-2xl text-center">
             I am also trying to improve my technical writing and document the
             most interesting technical projects I have worked on. You can read
             my latest blog post by clicking on the card below or see all posts
-            by going to the <a href="/blog">blog page.</a>
+            by going to the{" "}
+            <a href="/blog" class="text-primary hover:underline">
+              blog page.
+            </a>{" "}
             If you have any feedback on any of the posts I'd love to hear it.
           </p>
-          <ul class="list">
-            <BlogRecipeItem item={transformedBlogPost} client:load />
+          <ul class="w-full max-w-2xl list-none p-0 m-0">
+            <BlogRecipeItem item={transformedBlogPost} />
           </ul>
         </>
-      ) : null
+      )
     }
+
     {
-      latestExperience != null ? (
+      latestExperience != null && (
         <>
           <Button variant="secondary" href="/experience">
-            <h2 class="pageButton">Experience</h2>
+            <h2 class="px-2 py-1">Experience</h2>
           </Button>
-          <p>
+          <p class="text-white/70 leading-relaxed max-w-2xl text-center">
             I started my career in IT but rapidly discovered that scripting was
             far more interesting than turning computers off and on again.
             PowerShell scripting soon led to C# and .Net desktop applications,
             but the world of custom MSIs and WPF felt constrained so I taught
             myself JavaScript and React and I haven't looked back. My
             latest/current role is displayed below, to see my past roles please{" "}
-            <a href="/experience">click here.</a>
+            <a href="/experience" class="text-primary hover:underline">
+              click here.
+            </a>
           </p>
           <Job data={latestExperience} />
         </>
-      ) : null
+      )
     }
   </Section>
 </Root>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .pageButton {
-    margin: var(--paddingHalf);
-  }
-
-  p {
-    padding-left: var(--paddingHalf);
-    padding-right: var(--paddingHalf);
-  }
-
-  .list {
-    list-style-type: none;
-    display: flex;
-    flex-direction: column;
-    gap: var(--paddingDouble);
-    margin: unset;
-    padding: unset;
-  }
-
-  @include bp-small {
-    p {
-      padding-left: var(--padding);
-      padding-right: var(--padding);
-    }
-  }
-</style>

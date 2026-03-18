@@ -33,7 +33,7 @@ Unfortunately offering advice on how to cope with this phenomenon is very hard b
 
 - **Understand what causes changes** - Knowing the why can better help you cope with the challenge and adapt to it.
 - **Advocate for improved processes** - Explain how practices like agile development use a deliberately short development cycle to accommodate changes rapidly.
-- **Educate stakeholders** - Remember that everyone around has their responsibilities and they might not understand what the day to day of software development looks like or why their small change can have such big consequences.
+- **Educate stakeholders** - Remember that everyone around you has their responsibilities and they might not understand what the day to day of software development looks like or why their small change can have such big consequences.
 - **Show them the money** - Most people don’t understand what technical debt or developer experience are, but everyone understands money. Focusing on how changes increase costs or reduce profit can be much more effective.
 
 ## Conclusion

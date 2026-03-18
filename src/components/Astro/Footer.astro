@@ -1,54 +1,15 @@
 ---
 const today = new Date();
-
-const { className } = Astro.props;
 ---
 
-<footer class:list={["root", className]}>
-  <img class="logo" src="/logo/white.svg" alt="Alex Tuppen logo" class="logo" />
-  <div class="text">
-    <p>Copyright © {today.getFullYear()} Alex Tuppen</p>
+<footer class="py-12 flex flex-col items-center gap-6 border-t border-white/10">
+  <img
+    src="/logo/white.svg"
+    alt="Alex Tuppen logo"
+    class="w-16 sm:w-20 lg:w-24 opacity-80"
+  />
+  <div class="flex flex-col items-center gap-1 text-sm text-white/50">
+    <p>Copyright &copy; {today.getFullYear()} Alex Tuppen</p>
     <p>Published under the GNU GPL v3 license</p>
   </div>
 </footer>
-
-<style>
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .root {
-    width: 100%;
-    bottom: 0;
-    padding: var(--paddingDouble) 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--paddingDouble);
-  }
-
-  .logo {
-    position: relative;
-    --logo-width: 5rem;
-    width: var(--logo-width);
-    height: calc(var(--logo-width) * 1.5);
-  }
-
-  .text {
-    display: flex;
-    flex-direction: column;
-    gap: var(--paddingHalf);
-    text-align: center;
-  }
-
-  @include bp-small {
-    .logo {
-      --logo-width: 6.5rem;
-    }
-  }
-
-  @include bp-large {
-    .logo {
-      --logo-width: 9rem;
-    }
-  }
-</style>

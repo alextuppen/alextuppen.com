@@ -1,6 +1,4 @@
 ---
-import "normalize.css";
-
 interface Props {
   title: string;
   description: string;
@@ -29,13 +27,12 @@ const { title, description, image = "/logo/white.svg" } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Font preloads -->
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
-  rel="preload"
   href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600&family=Montserrat:wght@500&display=swap"
-  as="font"
-  type="font/woff"
-  crossorigin
+  rel="stylesheet"
 />
 
 <!-- Canonical URL -->

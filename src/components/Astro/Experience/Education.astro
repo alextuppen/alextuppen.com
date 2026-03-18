@@ -11,24 +11,6 @@ const {
 } = Astro.props;
 ---
 
-<div class="wrapper">
+<div class="w-full bg-surface-1 rounded-xl overflow-hidden text-left max-w-2xl">
   <ExpEduDetails details={details} month={false} />
 </div>
-
-<style lang="scss">
-  @import "../../../styles/globals.scss";
-
-  .wrapper {
-    @include elev-1();
-    width: 100%;
-    padding-bottom: var(--padding);
-    text-align: left;
-  }
-
-  @include bp-small {
-    .wrapper {
-      border-radius: var(--borderRadius);
-      max-width: calc(var(--contentMaxWidth) + var(--paddingDouble) * 2);
-    }
-  }
-</style>

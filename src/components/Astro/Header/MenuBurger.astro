@@ -1,6 +1,4 @@
 ---
-import Button from "../Button.astro";
-
 interface Props {
   id: string;
 }
@@ -8,128 +6,13 @@ interface Props {
 const { id } = Astro.props;
 ---
 
-<Button id={id} className="root">
-  <div id="menuBurgerFirst" class="first"></div>
-  <div id="menuBurgerMiddle" class="middle"></div>
-  <div id="menuBurgerHidden" class="hidden"></div>
-  <div id="menuBurgerLast" class="last"></div>
-</Button>
+<button
+  id={id}
+  aria-label="Toggle navigation menu"
+  class="relative w-8 h-8 flex flex-col justify-center items-center gap-1.5 p-1 rounded focus-visible:outline-2 focus-visible:outline-primary"
+>
+  <span id="menuBurgerBar1" class="block w-6 h-[3px] bg-white origin-center transition-all duration-300"></span>
+  <span id="menuBurgerBar2" class="block w-6 h-[3px] bg-primary origin-center transition-all duration-300"></span>
+  <span id="menuBurgerBar3" class="block w-6 h-[3px] bg-white origin-center transition-all duration-300"></span>
+</button>
 
-<script>
-  const button = document.getElementById("menuBurger");
-  const buttonElements = [
-    document.getElementById("menuBurgerFirst"),
-    document.getElementById("menuBurgerMiddle"),
-    document.getElementById("menuBurgerHidden"),
-    document.getElementById("menuBurgerLast"),
-  ];
-
-  if (button) {
-    button.addEventListener("click", () => {
-      if (button.dataset.open === "true") {
-        buttonElements.map((element) => {
-          if (element) {
-            element.classList.add("menuBurgerOpen");
-          }
-        });
-      } else {
-        buttonElements.map((element) => {
-          if (element) {
-            element.classList.remove("menuBurgerOpen");
-          }
-        });
-      }
-    });
-  }
-</script>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .root {
-    width: var(--burger-width);
-    height: 100%;
-    padding: 0;
-    position: relative;
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-    -webkit-transition: 0.5s ease-in-out;
-    -moz-transition: 0.5s ease-in-out;
-    -o-transition: 0.5s ease-in-out;
-    transition: 0.5s ease-in-out;
-  }
-
-  .first,
-  .middle,
-  .hidden,
-  .last {
-    position: absolute;
-    height: 15%;
-    width: 100%;
-    border-radius: var(--borderRadius);
-    opacity: 1;
-    left: 0;
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-    -webkit-transition: 0.25s ease-in-out;
-    -moz-transition: 0.25s ease-in-out;
-    -o-transition: 0.25s ease-in-out;
-    transition: 0.25s ease-in-out;
-  }
-
-  .first,
-  .last {
-    background: $text;
-  }
-
-  .middle,
-  .hidden {
-    background: $primary;
-  }
-
-  .first {
-    top: 10%;
-  }
-
-  .middle,
-  .hidden {
-    top: 42.5%;
-  }
-
-  .last {
-    bottom: 10%;
-  }
-
-  .menuBurgerOpen {
-    &.first {
-      top: 42.5%;
-      width: 0%;
-      left: 50%;
-    }
-
-    &.middle {
-      -webkit-transform: rotate(45deg);
-      -moz-transform: rotate(45deg);
-      -o-transform: rotate(45deg);
-      transform: rotate(45deg);
-    }
-
-    &.hidden {
-      -webkit-transform: rotate(-45deg);
-      -moz-transform: rotate(-45deg);
-      -o-transform: rotate(-45deg);
-      transform: rotate(-45deg);
-    }
-
-    &.last {
-      top: 42.5%;
-      width: 0%;
-      left: 50%;
-    }
-  }
-</style>

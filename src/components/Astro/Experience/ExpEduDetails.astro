@@ -1,5 +1,4 @@
 ---
-import type { z } from "astro:content";
 import type { expEduDetailsSchema } from "../../../schemas/expEduDetailsSchema";
 import dayjs from "dayjs";
 
@@ -7,7 +6,7 @@ const MONTH_FORMAT = "MMMM YYYY";
 const YEAR_FORMAT = "YYYY";
 
 interface Props {
-  details: z.infer<typeof expEduDetailsSchema>;
+  details: ReturnType<(typeof expEduDetailsSchema)["parse"]>;
   month: boolean;
 }
 
@@ -16,73 +15,29 @@ const {
   month,
 } = Astro.props;
 
-let formattedStartDate;
-let formattedEndDate;
-
-const parsedStateDate = dayjs(startDate);
+const parsedStartDate = dayjs(startDate);
 const parsedEndDate = dayjs(endDate);
 
-if (month) {
-  formattedStartDate = parsedStateDate.format(MONTH_FORMAT);
-  formattedEndDate = parsedEndDate.format(MONTH_FORMAT);
-} else {
-  formattedStartDate = parsedStateDate.format(YEAR_FORMAT);
-  formattedEndDate = parsedEndDate.format(YEAR_FORMAT);
-}
+const formattedStartDate = month
+  ? parsedStartDate.format(MONTH_FORMAT)
+  : parsedStartDate.format(YEAR_FORMAT);
 
-if (endDate == null) {
-  formattedEndDate = "Present";
-}
+const formattedEndDate =
+  endDate == null
+    ? "Present"
+    : month
+      ? parsedEndDate.format(MONTH_FORMAT)
+      : parsedEndDate.format(YEAR_FORMAT);
 ---
 
-<div class="root">
-  <h3 class="title">{title}</h3>
-  <span class="organisation">{organisation}</span>
-  <span class="date">
-    {formattedStartDate} - {formattedEndDate}
-  </span>
-  <span class="locationRole">
-    {location} - {roleType}
-  </span>
+<div class="p-6 flex flex-col gap-1">
+  <h3 class="text-lg font-semibold text-white">{title}</h3>
+  <span class="text-white/60 text-sm font-medium">{organisation}</span>
+  <div class="flex flex-wrap gap-x-3 gap-y-1 mt-1 text-xs text-white/40">
+    <span>{formattedStartDate} — {formattedEndDate}</span>
+    <span>&middot;</span>
+    <span>{location}</span>
+    <span>&middot;</span>
+    <span>{roleType}</span>
+  </div>
 </div>
-
-<style lang="scss">
-  @import "../../../styles/globals.scss";
-
-  .root {
-    padding: var(--paddingDouble) var(--paddingHalf) var(--paddingHalf);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .title {
-    padding-bottom: var(--paddingHalf);
-  }
-
-  .organisation {
-    padding: 0 0 var(--padding);
-  }
-
-  .organisation,
-  .locationRole,
-  .date {
-    color: $textMediumEmphasis;
-  }
-
-  .locationRole,
-  .date {
-    padding: unset;
-    font-size: var(--fontSizeSmall);
-  }
-
-  @include bp-small {
-    .wrapper {
-      border-radius: var(--borderRadius);
-      max-width: calc(var(--contentMaxWidth) + var(--paddingDouble) * 2);
-    }
-
-    .root {
-      padding: var(--paddingDouble) var(--paddingDouble) var(--padding);
-    }
-  }
-</style>

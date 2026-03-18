@@ -4,26 +4,13 @@ interface Props {
   variant?: "primary" | "text";
 }
 
-const { id, variant } = Astro.props;
+const { id, variant = "primary" } = Astro.props;
 ---
 
-<hr id={id ? id : undefined} class={variant ? variant : "primary"} />
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  hr {
-    border: unset;
-    border-bottom: 1px solid;
-    margin: 0 var(--paddingDouble);
-  }
-
-  .primary {
-    border-bottom-color: $primary;
-  }
-
-  .text {
-    border-bottom-color: $text;
-  }
-</style>
+<hr
+  id={id}
+  class:list={[
+    "border-0 border-b mx-8",
+    variant === "primary" ? "border-primary" : "border-white",
+  ]}
+/>

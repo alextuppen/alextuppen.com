@@ -2,19 +2,12 @@
 const { className, ...rest } = Astro.props;
 ---
 
-<section class:list={["section", className]} {...rest}>
+<section
+  class:list={[
+    "w-full max-w-6xl mx-auto px-4 py-10 flex flex-col gap-8 items-center",
+    className,
+  ]}
+  {...rest}
+>
   <slot />
 </section>
-
-<style lang="scss">
-  .section {
-    max-width: var(--pageMaxWidth);
-    display: flex;
-    flex-direction: column;
-    gap: var(--paddingDouble);
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin: var(--paddingDouble) auto;
-  }
-</style>

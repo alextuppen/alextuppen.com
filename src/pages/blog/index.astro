@@ -9,8 +9,8 @@ const sortedPosts = posts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const transformedPosts = sortedPosts.map(
-  ({ slug, data: { heroImage, heroImageText, title, description } }) => ({
-    href: `/blog/${slug}`,
+  ({ id, data: { heroImage, heroImageText, title, description } }) => ({
+    href: `/blog/${id}`,
     title,
     src: heroImage,
     alt: heroImageText,
@@ -21,17 +21,7 @@ const transformedPosts = sortedPosts.map(
 
 <Root title="Alex Tuppen | Blog" description={SITE_DESCRIPTION}>
   <Section>
-    <h1>Blog</h1>
+    <h1 class="text-4xl font-display font-medium">Blog</h1>
     <BlogRecipeList list={transformedPosts} />
   </Section>
 </Root>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  section {
-    max-width: var(--pageMaxWidth);
-    margin: auto;
-  }
-</style>

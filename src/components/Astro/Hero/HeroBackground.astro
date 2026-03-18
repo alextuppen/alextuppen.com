@@ -1,15 +1,20 @@
-<canvas id="hero-background-canvas"></canvas>
+---
+---
+
+<canvas id="hero-background-canvas" class="absolute inset-0 w-full h-full"></canvas>
 
 <script>
-  import debounce from "lodash.debounce";
-
   import type { Column } from "./HeroBackground.types";
 
-  const rootStyle = getComputedStyle(document.body);
-  const paddingValue = rootStyle.getPropertyValue("--padding");
-  const parsedPadding = parseFloat(paddingValue.replace("rem", ""));
-  const rootFontSize = parseFloat(rootStyle.fontSize);
-  const headerHeight = parsedPadding * rootFontSize * 3;
+  function debounce<T extends (...args: unknown[]) => void>(fn: T, delay: number): T {
+    let timeout: ReturnType<typeof setTimeout>;
+    return ((...args: unknown[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn(...args), delay);
+    }) as T;
+  }
+
+  const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
   const canvas = document.getElementById("hero-background-canvas");
   if (canvas == null || !(canvas instanceof HTMLCanvasElement)) {
@@ -28,15 +33,15 @@
   let totalPossibleColumns: number;
 
   function setCanvasSize() {
-    canvasWidth = document.body.clientWidth;
-    canvasHeight = document.body.clientHeight - headerHeight;
+    if (canvas == null || !(canvas instanceof HTMLCanvasElement)) {
+      throw new Error("Canvas not found");
+    }
+    canvasWidth = canvas.offsetWidth;
+    canvasHeight = canvas.offsetHeight;
 
     totalPossibleColumns = Math.floor((canvasWidth / rootFontSize) * 1.5);
     refreshAllColunns();
 
-    if (canvas == null || !(canvas instanceof HTMLCanvasElement)) {
-      throw new Error("Canvas not found");
-    }
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
   }
@@ -49,10 +54,8 @@
     const gradient = [];
 
     for (let i = 1; i <= columnLength; i++) {
-      // Generate between 97 and 122 (ASCII for lowercase letters)
       const randAscii = generateRandomNumber(97, 122);
       columnChars.push(String.fromCharCode(randAscii));
-
       gradient.push(alphaIncrement * i);
     }
 
@@ -90,47 +93,37 @@
   }
 
   function renderColumn(ctx: CanvasRenderingContext2D, column: Column) {
-    const {
-      chars,
-      currentChar,
-      charsRemaining,
-      gradient,
-      fontSize,
-      xCoord,
-      yCoord,
-    } = column;
+    const { chars, currentChar, charsRemaining, gradient, fontSize, xCoord, yCoord } = column;
 
     const length = chars.length;
-    const fadeInGradient = gradient.slice(-currentChar);
-    const fadeOutGradient = Array(length - charsRemaining)
-      .fill(0)
-      .concat(gradient);
+    const fadeOutOffset = length - charsRemaining;
 
+    ctx.font = `${fontSize}px "Matrix", sans-serif`;
+    ctx.shadowBlur = fontSize * 0.75;
+
+    let lastColour = "";
     for (let i = 0; i !== currentChar; i++) {
-      if (charsRemaining !== length && charsRemaining + i < length) {
-        continue;
-      }
+      if (charsRemaining !== length && charsRemaining + i < length) continue;
 
       const char = chars[i];
-      if (char == null) {
-        throw new Error(`Character at index ${i} in char is not defined`);
-      }
+      if (char == null) throw new Error(`Character at index ${i} is not defined`);
 
       let colour: string;
       if (i === currentChar - 1 && charsRemaining === length) {
         colour = "#f9ab01";
       } else {
-        if (charsRemaining === length) {
-          colour = `rgba(255, 255, 255, ${fadeInGradient[i]})`;
-        } else {
-          colour = `rgba(255, 255, 255, ${fadeOutGradient[i]})`;
-        }
+        const alpha = charsRemaining === length
+          ? (gradient[length - currentChar + i] ?? 0)
+          : (i < fadeOutOffset ? 0 : (gradient[i - fadeOutOffset] ?? 0));
+        if (alpha === 0) continue;
+        colour = `rgba(255, 255, 255, ${alpha})`;
       }
 
-      ctx.shadowColor = colour;
-      ctx.fillStyle = colour;
-      ctx.font = `${fontSize}px "Matrix", sans-serif`;
-      ctx.shadowBlur = fontSize * 0.75;
+      if (colour !== lastColour) {
+        ctx.shadowColor = colour;
+        ctx.fillStyle = colour;
+        lastColour = colour;
+      }
       ctx.fillText(char, xCoord, yCoord + fontSize * i);
     }
   }
@@ -142,42 +135,28 @@
     }
   }
 
+  let rafId: number | null = null;
+
   function animate() {
-    if (canvas == null || !(canvas instanceof HTMLCanvasElement)) {
-      throw new Error("Canvas not found");
-    }
-    if (context == null || !(context instanceof CanvasRenderingContext2D)) {
-      throw new Error("Context not found");
-    }
+    if (canvas == null || !(canvas instanceof HTMLCanvasElement)) throw new Error("Canvas not found");
+    if (context == null || !(context instanceof CanvasRenderingContext2D)) throw new Error("Context not found");
 
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.textAlign = "center";
     const now = window.performance.now();
     const newColumns: Column[] = [];
 
-    if (columns.length < totalPossibleColumns) {
-      generateColumn(false);
-    }
+    if (columns.length < totalPossibleColumns) generateColumn(false);
 
     for (const column of columns) {
-      const {
-        chars,
-        currentChar,
-        charsRemaining,
-        prevRender,
-        timeBetweenRenders,
-      } = column;
+      const { chars, currentChar, charsRemaining, prevRender, timeBetweenRenders } = column;
 
       if (now - prevRender < timeBetweenRenders) {
         renderColumn(context, column);
         newColumns.push(column);
       } else {
         renderColumn(context, column);
-
-        const newColumn = {
-          ...column,
-          prevRender: window.performance.now(),
-        };
+        const newColumn = { ...column, prevRender: now };
 
         if (currentChar < chars.length) {
           newColumn.currentChar = newColumn.currentChar + 1;
@@ -190,27 +169,48 @@
     }
 
     columns = newColumns;
-    window.requestAnimationFrame(animate);
+    rafId = window.requestAnimationFrame(animate);
+  }
+
+  function startAnimation() {
+    if (rafId === null) {
+      rafId = window.requestAnimationFrame(animate);
+    }
+  }
+
+  function stopAnimation() {
+    if (rafId !== null) {
+      window.cancelAnimationFrame(rafId);
+      rafId = null;
+    }
   }
 
   setCanvasSize();
-
   window.addEventListener("resize", debounce(setCanvasSize, 150));
 
-  const matrixFont = new FontFace("Matrix", "url(fonts/matrix.otf)");
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopAnimation();
+    } else {
+      startAnimation();
+    }
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        startAnimation();
+      } else {
+        stopAnimation();
+      }
+    }
+  });
+  observer.observe(canvas);
+
+  const matrixFont = new FontFace("Matrix", "url(/fonts/matrix.otf)");
   matrixFont.load().then((font) => {
     refreshAllColunns();
-
     document.fonts.add(font);
-    animate();
+    startAnimation();
   });
 </script>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  canvas {
-    border-bottom: 1px solid $text;
-  }
-</style>

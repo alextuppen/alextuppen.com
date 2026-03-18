@@ -1,160 +1,38 @@
 ---
 import Button from "../Button.astro";
 import HeroBackground from "./HeroBackground.astro";
-import Section from "../Section.astro";
-
 import { URL_LINKEDIN, URL_INSTAGRAM, URL_GITHUB } from "../../../consts";
 ---
 
-<Section className="hero">
+<div class="relative w-full h-[calc(100svh-4rem)] overflow-hidden flex items-center justify-center border-b border-white/10">
   <HeroBackground />
-  <div class="grid">
-    <img src="/logo/white.svg" alt="Alex Tuppen logo" class="atLogo" />
-    <div class="nameWrapper">
-      <h1 class="name">Alex</h1>
-      <h1 class="name">Tuppen</h1>
+  <div class="relative z-10 flex flex-col items-center gap-6 text-center px-4 sm:grid sm:grid-cols-[auto_1fr] sm:text-left sm:gap-x-8 sm:gap-y-4 sm:items-center">
+    <img
+      src="/logo/white.svg"
+      alt="Alex Tuppen logo"
+      class="w-28 sm:w-36 md:w-44 lg:w-56 xl:w-72 sm:row-span-2 drop-shadow-2xl"
+    />
+    <div class="flex flex-col">
+      <h1 class="font-display font-medium leading-none text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[13rem] text-white drop-shadow-lg">
+        Alex
+      </h1>
+      <h1 class="font-display font-medium leading-none text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] xl:text-[13rem] text-white drop-shadow-lg">
+        Tuppen
+      </h1>
     </div>
-    <h2 class="tagLine">Full stack developer</h2>
-    <div class="buttons">
-      <Button variant="largeIcon" href={URL_LINKEDIN} external={true}>
-        <img
-          width="48"
-          height="48"
-          src="/icons/websites/linkedin.svg"
-          alt="LinkedIn logo"
-        />
+    <h2 class="font-sans font-normal text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white/80 sm:col-start-2 drop-shadow">
+      Full stack developer
+    </h2>
+    <div class="flex gap-6 sm:col-start-2">
+      <Button variant="largeIcon" href={URL_LINKEDIN} external>
+        <img width="48" height="48" src="/icons/websites/linkedin.svg" alt="LinkedIn logo" />
       </Button>
-      <Button variant="largeIcon" href={URL_INSTAGRAM} external={true}>
-        <img
-          width="48"
-          height="48"
-          src="/icons/websites/instagram.svg"
-          alt="Instagram logo"
-        />
+      <Button variant="largeIcon" href={URL_INSTAGRAM} external>
+        <img width="48" height="48" src="/icons/websites/instagram.svg" alt="Instagram logo" />
       </Button>
-      <Button variant="largeIcon" href={URL_GITHUB} external={true}>
-        <img
-          width="48"
-          height="48"
-          src="/icons/websites/github.svg"
-          alt="Github logo"
-        />
+      <Button variant="largeIcon" href={URL_GITHUB} external>
+        <img width="48" height="48" src="/icons/websites/github.svg" alt="Github logo" />
       </Button>
     </div>
   </div>
-</Section>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .hero {
-    position: relative;
-    // 100 small view height - (2 x double padding (4) on section + rough height of header (3))
-    height: calc(100svh - (7 * var(--padding)));
-    padding-bottom: var(--paddingDouble);
-  }
-
-  .grid {
-    position: absolute;
-    display: grid;
-    grid-template-areas:
-      "atLogo"
-      "nameWrapper"
-      "tagLine"
-      "buttons";
-    justify-items: center;
-    align-items: center;
-    gap: var(--paddingDouble);
-  }
-
-  .atLogo {
-    grid-area: atLogo;
-    width: 10rem;
-  }
-
-  .nameWrapper {
-    grid-area: nameWrapper;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .name {
-    margin: auto;
-    font-size: 4rem;
-    line-height: 1;
-  }
-
-  .tagLine {
-    grid-area: tagLine;
-    font-size: 1.5rem;
-    font-weight: 500;
-  }
-
-  .buttons {
-    grid-area: buttons;
-    display: flex;
-    gap: var(--paddingDouble);
-  }
-
-  @include bp-small {
-    .grid {
-      grid-template-areas:
-        "atLogo nameWrapper"
-        "tagLine tagLine"
-        "buttons buttons";
-    }
-
-    .name {
-      margin: 0;
-      font-size: 6rem;
-      text-align: left;
-    }
-
-    .tagLine {
-      font-size: 2.25rem;
-    }
-  }
-
-  @include bp-medium {
-    .atLogo {
-      width: 12rem;
-    }
-
-    .name {
-      font-size: 7rem;
-    }
-
-    .tagLine {
-      font-size: 2.5rem;
-    }
-  }
-
-  @include bp-large {
-    .atLogo {
-      width: 16rem;
-    }
-
-    .name {
-      font-size: 9rem;
-    }
-
-    .tagLine {
-      font-size: 3rem;
-    }
-  }
-
-  @include bp-xl {
-    .atLogo {
-      width: 20rem;
-    }
-
-    .name {
-      font-size: 12rem;
-    }
-
-    .tagLine {
-      font-size: 3.75rem;
-    }
-  }
-</style>
+</div>

@@ -10,143 +10,45 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageText } =
 ---
 
 <Root title={title} description={description}>
-  <article>
-    <div class="heroWrapper">
-      {
-        heroImage && (
+  <article class="w-full max-w-6xl mx-auto px-4 py-10">
+    {
+      heroImage && (
+        <div class="flex justify-center mb-8">
           <img
             width="300"
             height="300"
             src={heroImage}
             alt={heroImageText}
             title={heroImageText}
-            class="heroImage"
+            class="w-4/5 sm:w-1/2 rounded-2xl shadow-xl shadow-black/40"
           />
-        )
-      }
-    </div>
-    <div class="wrapper">
-      <div class="titleWrapper">
-        <h1 class="title">{title}</h1>
-        <div class="date">
-          <FormattedDate date={pubDate} />
-          {
-            updatedDate && (
-              <div>
-                Last updated on <FormattedDate date={updatedDate} />
-              </div>
-            )
-          }
         </div>
-        <hr class="separator" />
+      )
+    }
+    <div class="text-center mb-8">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-medium mb-4">{title}</h1>
+      <div class="text-white/60 text-sm space-y-1">
+        <FormattedDate date={pubDate} />
+        {
+          updatedDate && (
+            <div>
+              Last updated on <FormattedDate date={updatedDate} />
+            </div>
+          )
+        }
       </div>
-      <div class="content">
-        <slot />
-      </div>
+      <hr class="mt-6 border-white/20 max-w-xs mx-auto" />
+    </div>
+    <div
+      class="prose prose-invert prose-lg max-w-2xl mx-auto
+             prose-headings:font-display prose-headings:font-medium
+             prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+             prose-code:bg-surface-9 prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+             prose-pre:bg-surface-9 prose-pre:rounded-lg prose-pre:shadow-lg
+             prose-li:marker:text-primary
+             prose-img:rounded-xl"
+    >
+      <slot />
     </div>
   </article>
 </Root>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  article {
-    max-width: var(--pageMaxWidth);
-    margin: auto;
-  }
-
-  .heroWrapper {
-    display: flex;
-    padding-top: var(--padding);
-  }
-
-  .heroImage {
-    width: 80%;
-    height: 80%;
-    margin: auto;
-    border-radius: var(--borderRadiusDouble);
-  }
-
-  .wrapper {
-    width: calc(100% - var(--paddingDouble));
-    margin: auto;
-  }
-
-  .titleWrapper {
-    display: flex;
-    flex-direction: column;
-    padding-top: var(--padding);
-    padding-bottom: var(--padding);
-    text-align: center;
-  }
-
-  .title {
-    margin-bottom: var(--padding);
-  }
-
-  .date {
-    margin-bottom: var(--paddingDouble);
-    color: $textMediumEmphasis;
-  }
-
-  .separator {
-    border-bottom-color: $text;
-    margin: 0 var(--paddingDouble);
-  }
-
-  .content {
-    max-width: var(--contentMaxWidth);
-    margin: auto;
-  }
-
-  @include bp-small {
-    .heroImage {
-      width: 50%;
-      height: 50%;
-      margin: auto;
-      border-radius: var(--borderRadiusDouble);
-    }
-
-    .wrapper {
-      padding: var(--padding);
-    }
-  }
-</style>
-<style is:global lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .content > h2 {
-    margin-top: var(--paddingTriple);
-  }
-
-  .content > h4 {
-    margin-top: var(--paddingDouble);
-  }
-
-  .content > ul {
-    padding-left: var(--padding);
-    list-style-image: url("/logo/bulletPoints/white.svg");
-  }
-
-  .content > svg {
-    padding-top: var(--padding);
-    padding-bottom: var(--padding);
-  }
-
-  .content > pre {
-    @include elev-9();
-    border-radius: var(--borderRadius);
-    padding: var(--paddingHalf);
-    max-width: calc(100vw - var(--padding));
-  }
-
-  .content > pre > code > span > span {
-    font-family: monospace;
-  }
-
-  .content > .astro-code {
-    background-color: $elevation6 !important;
-  }
-</style>

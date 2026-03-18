@@ -1,17 +1,18 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import solidJs from "@astrojs/solid-js";
-
+import tailwindcss from "@tailwindcss/vite";
 import d2 from "astro-d2";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://alextuppen.com",
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
     mdx(),
     sitemap(),
-    solidJs(),
     d2({
       layout: "elk",
       inline: true,

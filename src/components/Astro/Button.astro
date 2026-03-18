@@ -3,165 +3,42 @@ interface Props {
   id?: string;
   className?: string;
   variant?: "primary" | "secondary" | "icon" | "largeIcon" | "text";
-  handleClick?: (this: HTMLElement, ev: MouseEvent) => any;
   href?: string;
   external?: boolean;
 }
 
-const { id, className, variant, href, external = false, ...rest } = Astro.props;
+const { id, className, variant = "text", href, external = false, ...rest } =
+  Astro.props;
 
-const classList = ["button", variant, className];
+const base = "inline-flex items-center justify-center cursor-pointer select-none transition-all duration-200 active:translate-y-0.5 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2";
+
+const variants: Record<string, string> = {
+  primary:
+    "px-6 py-2.5 bg-primary text-base font-semibold tracking-wide rounded-lg hover:bg-primary-dark active:bg-primary-light shadow-lg shadow-black/40",
+  secondary:
+    "px-6 py-2.5 border border-primary text-white font-semibold tracking-wide rounded-lg hover:bg-primary/10 hover:border-primary-dark active:bg-primary/20",
+  text: "text-white hover:underline hover:decoration-primary hover:decoration-double hover:decoration-[0.1rem]",
+  icon: "w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-[3.4rem] lg:h-[3.4rem]",
+  largeIcon:
+    "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20",
+};
 ---
 
 {
   href ? (
     <a
       id={id}
-      class:list={classList}
+      class:list={[base, variants[variant], className]}
       href={href}
       target={external ? "_blank" : "_self"}
-      rel={external ? "noreferrer noopener" : null}
+      rel={external ? "noreferrer noopener" : undefined}
       {...rest}
     >
       <slot />
     </a>
   ) : (
-    <button id={id} class:list={classList} {...rest}>
+    <button id={id} class:list={[base, variants[variant], className]} {...rest}>
       <slot />
     </button>
   )
 }
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .button {
-    display: block;
-    color: $text !important;
-    background: none;
-    border: none;
-    text-decoration: none;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .button:active {
-    transform: translateY(0.2rem);
-  }
-
-  .text:hover,
-  .text:active {
-    text-decoration: underline;
-    text-decoration-color: $primary;
-    text-decoration-style: double;
-    text-decoration-thickness: 0.1rem;
-  }
-
-  .icon {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-
-  .largeIcon {
-    width: 3rem;
-    height: 3rem;
-  }
-
-  .primary,
-  .secondary {
-    white-space: nowrap;
-    text-decoration: none;
-    text-transform: capitalize;
-    letter-spacing: 0.1rem;
-    font-size: 1.25rem;
-    font-weight: 600;
-    display: inline-flex;
-    gap: var(--paddingHalf);
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0px 8px 15px $baseColour;
-    border-radius: var(--borderRadius);
-  }
-
-  .primary {
-    padding: calc(var(--paddingHalf) + var(--borderWidth))
-      calc(var(--padding) + var(--borderWidth));
-    background-color: $primary;
-    transition: background-color 0.25s ease-in-out;
-    color: $baseColour;
-  }
-
-  .primary:hover {
-    background-color: $primaryDark;
-  }
-
-  .primary:active {
-    background-color: $primaryLight;
-  }
-
-  .secondary {
-    padding: var(--paddingHalf) var(--padding);
-    background-color: $baseColour;
-    border: var(--borderWidth) solid $primary;
-    transition: border 0.25s;
-  }
-
-  .secondary:hover {
-    background-color: rgba($color: $primary, $alpha: 0.1);
-    border-color: $primaryDark;
-  }
-
-  .secondary:active {
-    background-color: rgba($color: $primary, $alpha: 0.2);
-    border-color: $primaryLight;
-  }
-
-  @include bp-small {
-    .icon {
-      width: 2.75rem;
-      height: 2.75rem;
-    }
-
-    .largeIcon {
-      width: 3.5rem;
-      height: 3.5rem;
-    }
-  }
-
-  @include bp-medium {
-    .icon {
-      width: 3rem;
-      height: 3rem;
-    }
-
-    .largeIcon {
-      width: 4rem;
-      height: 4rem;
-    }
-  }
-
-  @include bp-large {
-    .icon {
-      width: 3.4rem;
-      height: 3.4rem;
-    }
-
-    .largeIcon {
-      width: 5rem;
-      height: 5rem;
-    }
-  }
-
-  @include bp-xl {
-    .icon {
-      width: 3.75rem;
-      height: 3.75rem;
-    }
-
-    .largeIcon {
-      width: 6rem;
-      height: 6rem;
-    }
-  }
-</style>

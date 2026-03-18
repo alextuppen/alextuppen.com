@@ -10,23 +10,29 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^0.19.7",
-    "@astrojs/sitemap": "^2.0.1",
-    "@astrojs/solid-js": "^4.0.1",
-    "astro": "^4.4.8",
-    "astro-d2": "^0.7.0",
+    "@astrojs/mdx": "^5.0.1",
+    "@astrojs/sitemap": "^3.7.1",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.2.1",
+    "astro": "^6.0.5",
+    "astro-d2": "^0.10.0",
     "dayjs": "^1.11.10",
-    "enquire.js": "^2.1.6",
     "fuse.js": "^7.0.0",
-    "lodash.debounce": "^4.0.8",
-    "normalize.css": "^8.0.1",
-    "sass": "^1.71.1",
-    "solid-js": "^1.8.15"
+    "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
-    "@types/enquire.js": "^2.1.5",
-    "@types/lodash.debounce": "^4.0.9",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1"
+  },
+  "packageManager": "pnpm@10.28.1",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "sharp"
+    ],
+    "overrides": {
+      "@astrojs/internal-helpers": "^0.8.0"
+    }
   }
 }

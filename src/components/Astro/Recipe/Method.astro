@@ -9,27 +9,38 @@ interface Props {
 const { recipeInstructions } = Astro.props;
 ---
 
-<div class="root">
-  <h2>Method</h2>
-  <ol class="list">
+<div class="flex-1 px-4 lg:px-0">
+  <h2 class="text-xl font-display font-medium text-center mb-6">Method</h2>
+  <ol class="flex flex-col gap-8 list-none p-0 text-left counter-reset-[method]">
     {
-      recipeInstructions.map((instruction) => (
-        <li class="item">
-          <h4 class="title">{instruction.name}</h4>
-          {instruction.text != null && <p>{instruction.text}</p>}
+      recipeInstructions.map((instruction, idx) => (
+        <li class="flex flex-col gap-3">
+          <h4 class="flex items-center gap-2 font-semibold text-white">
+            <span class="text-primary font-display">{idx + 1}.</span>
+            {instruction.name}
+          </h4>
+          {instruction.text != null && (
+            <p class="text-white/80 text-sm leading-relaxed">{instruction.text}</p>
+          )}
           {instruction.itemListElement != null &&
             instruction.itemListElement.map((element) => {
               switch (element["@type"]) {
                 case "HowToDirection":
-                  return <p>{element.text}</p>;
+                  return (
+                    <p class="text-white/80 text-sm leading-relaxed">
+                      {element.text}
+                    </p>
+                  );
                 case "HowToTip":
                   return (
-                    <div class="tip">
-                      <div class="tipTitle">
+                    <div class="flex flex-col gap-2 p-4 bg-surface-3 rounded-lg border border-white/10">
+                      <div class="flex items-center gap-2 text-primary font-semibold text-sm">
                         <LightBulb />
-                        <h5>Tip</h5>
+                        <span>Tip</span>
                       </div>
-                      <p>{element.text}</p>
+                      <p class="text-white/80 text-sm leading-relaxed">
+                        {element.text}
+                      </p>
                     </div>
                   );
                 default:
@@ -43,59 +54,3 @@ const { recipeInstructions } = Astro.props;
     }
   </ol>
 </div>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .root {
-    padding: 0 var(--padding);
-  }
-
-  h2 {
-    text-align: center;
-    margin-bottom: var(--paddingDouble);
-  }
-
-  .list {
-    padding-left: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--paddingTriple);
-    counter-reset: method;
-    list-style-type: none;
-    color: $text;
-    text-align: left;
-  }
-
-  .item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding);
-    counter-increment: method;
-  }
-
-  .title {
-    display: flex;
-    gap: var(--paddingHalf);
-  }
-
-  .title::before {
-    content: counter(method) ".";
-  }
-
-  .tip {
-    display: flex;
-    padding: var(--padding);
-    @include elev-3();
-    flex-direction: column;
-    gap: var(--paddingHalf);
-    border-radius: var(--borderRadius);
-  }
-
-  .tipTitle {
-    display: flex;
-    align-items: center;
-    gap: var(--paddingHalf);
-  }
-</style>

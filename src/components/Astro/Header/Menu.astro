@@ -4,29 +4,34 @@ import { internalLinks, externalLinks } from "./Header.astro";
 import MenuBurger from "./MenuBurger.astro";
 ---
 
-<MenuBurger id={"menuBurger"} />
-<div id="menu" class="menu">
+<MenuBurger id="menuBurger" />
+<div
+  id="menu"
+  class="absolute right-0 top-full mt-2 bg-surface-9 rounded-lg border border-white/10 shadow-xl min-w-36 flex flex-col py-2 origin-top transition-all duration-200 opacity-0 scale-y-0 pointer-events-none"
+  aria-hidden="true"
+>
   {
-    internalLinks.map(({ link, text }, index) => (
-      <>
-        <Button href={link} variant="text" className="internal">
-          {text}
-        </Button>
-        {index < internalLinks.length - 1 ? (
-          <hr class:list={["menuSeparator", "internal"]} />
-        ) : null}
-      </>
+    internalLinks.map(({ link, text }) => (
+      <Button
+        href={link}
+        variant="text"
+        className="px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 w-full justify-start !no-underline"
+      >
+        {text}
+      </Button>
     ))
   }
-  <hr class:list={["primarySeparator", "internal"]} />
+  <hr class="border-primary/40 mx-3 my-1" />
   {
-    externalLinks.map(({ link, text }, index) => (
-      <>
-        <Button href={link} variant="text" external>
-          {text}
-        </Button>
-        {index < externalLinks.length - 1 ? <hr class="menuSeparator" /> : null}
-      </>
+    externalLinks.map(({ link, text }) => (
+      <Button
+        href={link}
+        variant="text"
+        external
+        className="px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 w-full justify-start !no-underline"
+      >
+        {text}
+      </Button>
     ))
   }
 </div>
@@ -35,86 +40,39 @@ import MenuBurger from "./MenuBurger.astro";
   let open = false;
   const button = document.getElementById("menuBurger");
   const menu = document.getElementById("menu");
+  const bar1 = document.getElementById("menuBurgerBar1");
+  const bar2 = document.getElementById("menuBurgerBar2");
+  const bar3 = document.getElementById("menuBurgerBar3");
 
-  if (button && menu) {
-    const setElementsData = (value: "true" | "false") => {
-      button.dataset.open = value;
-      menu.dataset.open = value;
-    };
+  if (button && menu && bar1 && bar2 && bar3) {
+    const setOpen = (value: boolean) => {
+      open = value;
 
-    const toggleOpen = () => {
-      if (open) {
-        open = false;
-        setElementsData("false");
+      // Animate burger bars into X (translateY = bar height/2 + gap = 1.5px + 6px + 1.5px = 9px)
+      if (value) {
+        bar1.style.transform = "translateY(9px) rotate(45deg)";
+        bar2.style.opacity = "0";
+        bar3.style.transform = "translateY(-9px) rotate(-45deg)";
       } else {
-        open = true;
-        setElementsData("true");
+        bar1.style.transform = "";
+        bar2.style.opacity = "";
+        bar3.style.transform = "";
       }
+
+      // Toggle dropdown via classes (Tailwind v4 uses the CSS `scale` property,
+      // not `transform`, so inline style overrides don't work for scale-y-*)
+      menu.classList.toggle("opacity-0", !value);
+      menu.classList.toggle("scale-y-0", !value);
+      menu.classList.toggle("pointer-events-none", !value);
+      menu.setAttribute("aria-hidden", value ? "false" : "true");
     };
 
-    setElementsData("false");
+    button.addEventListener("click", () => setOpen(!open));
 
-    button.addEventListener("click", () => {
-      toggleOpen();
+    document.addEventListener("click", (e) => {
+      if (open && !button.contains(e.target as Node) && !menu.contains(e.target as Node)) {
+        setOpen(false);
+      }
     });
-  } else {
-    console.error("menuBurger button and menu not found!");
   }
 </script>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .menu {
-    position: absolute;
-    top: calc(var(--paddingHalf) + 100%);
-    right: calc(100% - var(--burger-width) - var(--borderRadius));
-    @include elev-9();
-    padding: var(--paddingHalf) var(--paddingHalf) var(--padding)
-      var(--paddingHalf);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--paddingHalf);
-    border-bottom-left-radius: var(--borderRadius);
-    transition:
-      opacity 250ms ease-in-out,
-      transform 250ms ease-in-out;
-    opacity: 0;
-    transform-origin: top center;
-    transform: scaleY(0);
-  }
-
-  .menu[data-open="true"] {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-
-  .menuSeparator,
-  .primarySeparator {
-    width: 100%;
-  }
-
-  .menuSeparator {
-    border-bottom-color: $text;
-  }
-
-  .primarySeparator {
-    border-bottom-color: $primary;
-  }
-
-  @include bp-small {
-    .menu {
-      border-bottom-right-radius: var(--borderRadius);
-    }
-
-    .internal {
-      display: none;
-    }
-
-    .internal-link {
-      display: none;
-    }
-  }
-</style>

@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import HorizontalSeperator from "../HorizontalSeperator.astro";
 
 interface Props {
   tool: CollectionEntry<"recipes">["data"]["tool"];
@@ -10,114 +9,34 @@ interface Props {
 const { tool, recipeIngredient } = Astro.props;
 ---
 
-<div class="root">
-  <div class="wrapper">
-    <h2>Tools</h2>
-    <ul class="list">
+<div class="flex flex-col gap-6 lg:h-max lg:bg-surface-1 lg:rounded-xl lg:p-6 lg:min-w-64">
+  <div class="px-4 lg:px-0">
+    <h2 class="text-xl font-display font-medium text-center mb-5">Tools</h2>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-2 p-0">
       {
         tool.map(({ name }) => (
-          <li class="item">
-            <img src="/logo/bulletPoints/white.svg" class="bulletPoint" />
-            <span>{name}</span>
+          <li class="flex items-center gap-3 text-left">
+            <img src="/logo/bulletPoints/white.svg" class="w-4 h-4 shrink-0" alt="" />
+            <span class="text-sm text-white/80">{name}</span>
           </li>
         ))
       }
     </ul>
   </div>
-  <HorizontalSeperator id="tools-ingredients" variant="text" />
-  <div class="wrapper">
-    <h2>Ingredients</h2>
-    <ul class="list">
+
+  <hr class="border-white/10" />
+
+  <div class="px-4 lg:px-0">
+    <h2 class="text-xl font-display font-medium text-center mb-5">Ingredients</h2>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-2 p-0">
       {
         recipeIngredient.map((ingredient) => (
-          <li class="item">
-            <img src="/logo/bulletPoints/white.svg" class="bulletPoint" />
-            <span>{ingredient}</span>
+          <li class="flex items-center gap-3 text-left">
+            <img src="/logo/bulletPoints/white.svg" class="w-4 h-4 shrink-0" alt="" />
+            <span class="text-sm text-white/80">{ingredient}</span>
           </li>
         ))
       }
     </ul>
   </div>
 </div>
-
-<script>
-  import enquire from "enquire.js";
-  import { BP_QUERY_LARGE } from "../../../consts";
-
-  const toolsIngredients = document.getElementById("tools-ingredients");
-
-  enquire.register(BP_QUERY_LARGE, {
-    match: () => {
-      if (toolsIngredients == null) return;
-      toolsIngredients.style.display = "none";
-    },
-    unmatch: () => {
-      if (toolsIngredients == null) return;
-      toolsIngredients.style.display = "block";
-    },
-  });
-</script>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .root {
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding);
-  }
-
-  .wrapper {
-    padding: 0 var(--padding);
-  }
-
-  h2 {
-    text-align: center;
-    margin-bottom: var(--paddingDouble);
-  }
-
-  .list {
-    padding-left: 0;
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .item {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: var(--padding);
-    color: $text;
-    text-align: left;
-  }
-
-  .bulletPoint {
-    width: var(--fontSize);
-  }
-
-  @include bp-small {
-    .list {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @include bp-medium {
-    .list {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
-  }
-
-  @include bp-large {
-    .root {
-      height: max-content;
-      padding: var(--padding);
-      @include elev-1();
-      border-radius: var(--borderRadius);
-    }
-
-    .list {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

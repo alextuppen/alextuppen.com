@@ -27,50 +27,13 @@ const lookUpTechnologies = (technologies: Technologies) =>
 const lookedUpTechs = lookUpTechnologies(technologies);
 ---
 
-<ul>
+<ul class="flex flex-wrap gap-3 p-4 sm:px-8 bg-surface-2 border-t border-primary/60 list-none m-0 sm:rounded-b-xl">
   {
     lookedUpTechs.map(({ title, src, alt }) => (
-      <li>
-        <img src={src} alt={alt} />
-        <span>{title}</span>
+      <li class="flex items-center gap-2">
+        <img src={src} alt={alt} class="w-5 h-5 object-contain" />
+        <span class="text-xs text-white/70">{title}</span>
       </li>
     ))
   }
 </ul>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  ul {
-    @include elev-4();
-    border-top-color: $primary;
-    border-top-width: var(--borderWidth);
-    border-top-style: solid;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--padding);
-    padding: var(--padding) var(--paddingHalf);
-    margin: unset;
-  }
-
-  li {
-    display: flex;
-    gap: var(--paddingHalf);
-    align-items: center;
-  }
-
-  span {
-    padding: unset;
-    font-size: var(--fontSizeSmall);
-  }
-
-  @include bp-small {
-    ul {
-      padding: var(--padding) var(--paddingDouble);
-      border-bottom-left-radius: var(--borderRadius);
-      border-bottom-right-radius: var(--borderRadius);
-    }
-  }
-</style>

@@ -4,178 +4,63 @@ import Button from "../Button.astro";
 import Menu from "./Menu.astro";
 
 export const internalLinks = [
-  {
-    link: "/recipes",
-    text: "Recipes",
-  },
-  {
-    link: "/blog",
-    text: "Blog",
-  },
-  {
-    link: "/experience",
-    text: "Experience",
-  },
+  { link: "/recipes", text: "Recipes" },
+  { link: "/blog", text: "Blog" },
+  { link: "/experience", text: "Experience" },
 ];
 
 export const externalLinks = [
-  {
-    link: URL_LINKEDIN,
-    text: "LinkedIn",
-  },
-  {
-    link: URL_INSTAGRAM,
-    text: "Instagram",
-  },
-  {
-    link: URL_GITHUB,
-    text: "Github",
-  },
+  { link: URL_LINKEDIN, text: "LinkedIn" },
+  { link: URL_INSTAGRAM, text: "Instagram" },
+  { link: URL_GITHUB, text: "Github" },
 ];
-
-const { className } = Astro.props;
 ---
 
-<header class:list={[className]}>
-  <div class="root">
-    <div class="navBar">
-      <Button href="/" className="homeLink" variant="text">
-        <img class="logo" src="/logo/white.svg" alt="Alex Tuppen logo" />
-        <span class="homeLinkText">Alex Tuppen</span>
-      </Button>
-      <div class="links">
-        {
-          internalLinks.map(({ link, text }, index) => (
-            <>
-              <Button href={link} variant="text" className="internal">
-                {text}
-              </Button>
-              {index < internalLinks.length - 1 ? (
-                <hr class:list={["toolbarSeperator", "internal"]} />
-              ) : null}
-            </>
-          ))
-        }
-        <hr class:list={["primarySeperator", "external"]} />
-        {
-          externalLinks.map(({ link, text }, index) => (
-            <>
-              <Button
-                href={link}
-                variant="text"
-                external={true}
-                className="external"
-              >
-                {text}
-              </Button>
-              {index < externalLinks.length - 1 ? (
-                <hr class:list={["toolbarSeperator", "external"]} />
-              ) : null}
-            </>
-          ))
-        }
-        <div class="buttonWrapper">
-          <Menu />
-        </div>
-      </div>
+<header class="sticky top-0 z-50 bg-surface-6/95 backdrop-blur-sm border-b border-white/10">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <Button href="/" variant="text" className="min-w-0 flex items-center gap-3 !no-underline group">
+      <img
+        src="/logo/white.svg"
+        alt="Alex Tuppen logo"
+        class="h-8 w-auto transition-opacity group-hover:opacity-80"
+      />
+      <span class="font-display font-medium text-xl sm:text-2xl text-white truncate">
+        Alex Tuppen
+      </span>
+    </Button>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center gap-1">
+      {
+        internalLinks.map(({ link, text }, i) => (
+          <>
+            <Button href={link} variant="text" className="px-3 py-1 text-sm font-medium text-white/80 hover:text-white">
+              {text}
+            </Button>
+            {i < internalLinks.length - 1 && (
+              <span class="text-white/20">|</span>
+            )}
+          </>
+        ))
+      }
+      <span class="text-primary mx-2">|</span>
+      {
+        externalLinks.map(({ link, text }, i) => (
+          <>
+            <Button href={link} variant="text" external className="px-3 py-1 text-sm font-medium text-white/80 hover:text-white">
+              {text}
+            </Button>
+            {i < externalLinks.length - 1 && (
+              <span class="text-white/20">|</span>
+            )}
+          </>
+        ))
+      }
+    </nav>
+
+    <!-- Mobile burger -->
+    <div class="relative shrink-0 md:hidden">
+      <Menu />
     </div>
   </div>
 </header>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .root {
-    @include elev-6();
-    display: flex;
-    padding: var(--paddingHalf);
-    position: sticky;
-    justify-content: center;
-  }
-
-  .navBar {
-    width: 100%;
-    max-width: var(--pageMaxWidth);
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .homeLink {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .logo {
-    --logo-height: 2rem;
-    height: var(--logo-height);
-    width: calc(var(--logo-height) / 1.5);
-  }
-
-  .homeLinkText {
-    color: $text;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 500;
-    font-size: 2rem;
-    line-height: 2rem;
-    margin-left: var(--padding);
-  }
-
-  .links {
-    display: flex;
-    align-items: center;
-    gap: var(--paddingHalf);
-  }
-
-  .internal,
-  .external {
-    display: none;
-  }
-
-  .toolbarSeperator,
-  .primarySeperator {
-    height: 100%;
-  }
-
-  .toolbarSeperator {
-    border-right-color: $text;
-  }
-
-  .primarySeperator {
-    border-right-color: $primary;
-  }
-
-  .buttonWrapper {
-    --burger-width: 2rem;
-    position: relative;
-    display: block;
-    height: 100%;
-  }
-
-  @include bp-small {
-    .logo {
-      --logo-height: 2.25rem;
-    }
-
-    .internal {
-      display: flex;
-    }
-  }
-
-  @include bp-medium {
-    .external {
-      display: flex;
-    }
-
-    .buttonWrapper {
-      display: none;
-    }
-  }
-
-  @include bp-large {
-    .logo {
-      --logo-height: 2.5rem;
-    }
-  }
-</style>

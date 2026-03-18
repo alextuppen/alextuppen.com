@@ -10,48 +10,14 @@ const { creativeWorkStatus } = Astro.props;
 
 {
   creativeWorkStatus === "draft" && (
-    <div class="root">
-      <ExclamationCircle className="draftIcon" />
-      <h3 class="draftTitle">Draft recipe</h3>
-      <span class="draftText">
-        This recipe is in draft state; it is unfinished and still being refined.
-      </span>
+    <div class="flex items-start gap-4 p-4 bg-surface-3 border border-primary/30 rounded-lg">
+      <ExclamationCircle className="w-8 h-8 text-primary shrink-0 mt-0.5" />
+      <div class="text-left">
+        <h3 class="font-semibold text-white mb-1">Draft recipe</h3>
+        <span class="text-sm text-white/70">
+          This recipe is in draft state; it is unfinished and still being refined.
+        </span>
+      </div>
     </div>
   )
 }
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  .root {
-    margin: auto;
-    padding: 0 var(--padding);
-    display: grid;
-    grid-template-areas:
-      "draft-top draft-top"
-      "icon title"
-      "icon text"
-      "draft-bottom draft-bottom";
-    row-gap: var(--paddingHalf);
-    column-gap: var(--padding);
-  }
-
-  .draftIcon {
-    grid-area: icon;
-    width: calc(var(--fontSize) * 3);
-    height: 100%;
-    color: $text;
-  }
-
-  .draftTitle {
-    grid-area: title;
-    justify-self: start;
-  }
-
-  .draftText {
-    grid-area: text;
-    justify-self: start;
-    text-align: start;
-  }
-</style>

@@ -27,18 +27,28 @@ const {
 ---
 
 <Root title={name} description={description}>
-  <article>
-    <div class="heroWrapper">
+  <article class="w-full max-w-6xl mx-auto px-4 py-10 flex flex-col gap-8">
+    <div class="flex flex-col items-center gap-4">
       {
         image != null && image[0] != null && (
-          <img width="300" height="300" src={image[0]} class="heroImage" />
+          <img
+            width="300"
+            height="300"
+            src={image[0]}
+            alt={name}
+            class="w-4/5 sm:w-1/2 lg:w-1/3 rounded-2xl shadow-xl shadow-black/40"
+          />
         )
       }
-      <h1>{name}</h1>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-medium text-center">
+        {name}
+      </h1>
     </div>
-    <div class="descriptionWrapper">
+
+    <div class="flex flex-col gap-4 bg-surface-1 rounded-xl p-6 max-w-2xl w-full mx-auto">
       <Draft creativeWorkStatus={creativeWorkStatus} />
-      <p class="description">{description}</p>
+      <p class="text-center text-white/80">{description}</p>
+      <HorizontalSeperator variant="primary" />
       <TimesServes
         prepTime={prepTime}
         cookTime={cookTime}
@@ -46,92 +56,14 @@ const {
         recipeYield={recipeYield}
       />
     </div>
-    <div class="toolsIngredientsMethod" id="test2">
-      <ToolsIngredients tool={tool} recipeIngredient={recipeIngredient} />
-      <HorizontalSeperator id="toolsIngredientsMethodSeperator" />
+
+    <div class="flex flex-col lg:flex-row gap-8 w-full">
+      <div class="lg:w-72 lg:shrink-0">
+        <ToolsIngredients tool={tool} recipeIngredient={recipeIngredient} />
+      </div>
+      <!-- horizontal rule on mobile only -->
+      <hr class="lg:hidden border-white/20" />
       <Method recipeInstructions={recipeInstructions} />
     </div>
   </article>
 </Root>
-
-<script>
-  import enquire from "enquire.js";
-  import { BP_QUERY_LARGE } from "../consts";
-
-  const toolsIngredientsMethod = document.getElementById(
-    "toolsIngredientsMethodSeperator",
-  );
-
-  enquire.register(BP_QUERY_LARGE, {
-    match: () => {
-      if (toolsIngredientsMethod == null) return;
-      toolsIngredientsMethod.style.display = "none";
-    },
-    unmatch: () => {
-      if (toolsIngredientsMethod == null) return;
-      toolsIngredientsMethod.style.display = "block";
-    },
-  });
-</script>
-
-<style lang="scss">
-  @import "src/styles/_globals.scss";
-  @import "src/styles/typography.scss";
-
-  article {
-    max-width: var(--pageMaxWidth);
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: var(--paddingDouble);
-  }
-
-  .heroWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding);
-    padding-top: var(--paddingDouble);
-  }
-
-  .heroImage {
-    width: 80%;
-    height: 80%;
-    margin: auto;
-    border-radius: var(--borderRadiusDouble);
-  }
-
-  h1 {
-    text-align: center;
-    margin: 0 var(--padding);
-  }
-
-  .descriptionWrapper {
-    padding: var(--padding);
-    display: flex;
-    flex-direction: column;
-    gap: var(--padding);
-    @include elev-1();
-  }
-
-  .description {
-    text-align: center;
-  }
-
-  .toolsIngredientsMethod {
-    display: flex;
-    flex-direction: column;
-    gap: var(--paddingDouble);
-  }
-
-  @include bp-small {
-    .descriptionWrapper {
-      border-radius: var(--borderRadius);
-    }
-  }
-
-  @include bp-large {
-    .toolsIngredientsMethod {
-      flex-direction: row;
-    }
-  }
-</style>

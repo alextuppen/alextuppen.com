@@ -12,39 +12,16 @@ const {
 } = Astro.props;
 ---
 
-<div class="wrapper">
+<div class="w-full bg-surface-1 rounded-xl overflow-hidden text-left max-w-2xl">
   <ExpEduDetails details={details} month={true} />
   {
     description && description.length > 0 ? (
-      <p class="description">{description.join("")}</p>
+      <p class="px-6 pb-6 text-sm text-white/70 whitespace-pre-line leading-relaxed">
+        {description.join("")}
+      </p>
     ) : (
-      <p class="description">Description coming soon!</p>
+      <p class="px-6 pb-6 text-sm text-white/40 italic">Description coming soon!</p>
     )
   }
   {technologies && <Technologies technologies={technologies} />}
 </div>
-
-<style lang="scss">
-  @import "../../../styles/globals.scss";
-
-  .wrapper {
-    @include elev-1();
-    text-align: left;
-  }
-
-  .description {
-    padding: var(--paddingDouble) var(--paddingHalf);
-    white-space: pre-line;
-  }
-
-  @include bp-small {
-    .wrapper {
-      border-radius: var(--borderRadius);
-      max-width: calc(var(--contentMaxWidth) + var(--paddingDouble) * 2);
-    }
-
-    .description {
-      padding: var(--padding) var(--paddingDouble) var(--paddingDouble);
-    }
-  }
-</style>
