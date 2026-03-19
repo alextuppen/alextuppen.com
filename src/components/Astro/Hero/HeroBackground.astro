@@ -19,17 +19,7 @@
 
   const worker = new Worker(new URL("./HeroBackground.worker.ts", import.meta.url), { type: "module" });
 
-  function getContentBounds() {
-    const heroContent = document.getElementById("hero-content");
-    if (heroContent) {
-      const rect = heroContent.getBoundingClientRect();
-      return { contentLeft: rect.left, contentRight: rect.right };
-    }
-    return { contentLeft: 0, contentRight: 0 };
-  }
-
   const offscreen = canvas.transferControlToOffscreen();
-  const { contentLeft, contentRight } = getContentBounds();
 
   worker.postMessage(
     {
@@ -37,21 +27,16 @@
       canvas: offscreen,
       width: canvas.offsetWidth,
       height: canvas.offsetHeight,
-      contentLeft,
-      contentRight,
       rootFontSize: parseFloat(getComputedStyle(document.documentElement).fontSize),
     },
     [offscreen],
   );
 
   window.addEventListener("resize", debounce(() => {
-    const { contentLeft, contentRight } = getContentBounds();
     worker.postMessage({
       type: "resize",
       width: canvas.offsetWidth,
       height: canvas.offsetHeight,
-      contentLeft,
-      contentRight,
     });
   }, 150));
 
