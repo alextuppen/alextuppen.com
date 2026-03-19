@@ -1,6 +1,6 @@
 ---
 import { Root } from "../layouts";
-import { BlogRecipeItem, Button, Hero, Job, Section } from "../components";
+import { BlogRecipeItem, Button, Hero } from "../components";
 
 import { SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
@@ -69,40 +69,61 @@ const latestExperienceIndex = experiences.reduce(
   0,
 );
 const latestExperience = experiences[latestExperienceIndex]?.data;
+let transformedExperience;
+if (latestExperience != null) {
+  const { details } = latestExperience;
+  const fmt = (d: Date) =>
+    d.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+  const dateRange = `${fmt(details.startDate)} – ${details.endDate != null ? fmt(details.endDate) : "Present"}`;
+  transformedExperience = {
+    href: "/experience",
+    title: details.title,
+    src: latestExperience.image,
+    alt: details.organisation,
+    subtitle: details.organisation,
+    description: `${dateRange} · ${details.location}`,
+  };
+}
 ---
 
 <Root title={"Alex Tuppen"} description={SITE_DESCRIPTION}>
   <Hero />
-  <Section>
-    <p class="text-white/70 leading-relaxed max-w-2xl text-center">
-      Hello and welcome to my website, I'm a full stack developer based in
-      London, UK. When I'm not building the next generation of web applications
-      I am travelling the world with my girlfriend or experimenting in the
-      kitchen in my never ending quest to make the tastiest meals for the least
-      effort. If you would like to get in touch please connect on LinkedIn or
-      Instagram.
-    </p>
+
+  <div class="w-full max-w-4xl mx-auto px-4">
+    <section class="py-12">
+      <p class="text-white/70 leading-relaxed text-lg">
+        Hello and welcome to my website, I'm a full stack developer based in
+        London, UK. When I'm not building the next generation of web
+        applications I am travelling the world with my girlfriend or
+        experimenting in the kitchen in my never ending quest to make the
+        tastiest meals for the least effort. If you would like to get in touch
+        please connect on LinkedIn or Instagram.
+      </p>
+    </section>
 
     {
       transformedRecipe != null && (
         <>
-          <Button variant="secondary" href="/recipes">
-            <h2 class="px-2 py-1">Recipes</h2>
-          </Button>
-          <p class="text-white/70 leading-relaxed max-w-2xl text-center">
-            I enjoy the challenge of creating recipes that are as easy to cook
-            as possible. They are not complicated or fancy but they do use
-            ingredients in standard UK supermarket package sizes and generate as
-            little washing up as possible. You can see all of my recipes on the{" "}
-            <a href="/recipes" class="text-primary hover:underline">
-              recipes page
-            </a>{" "}
-            or click the card below to go straight to my favourite recipe.
-            Please let me know what you think if you cook one of them!
-          </p>
-          <ul class="w-full max-w-2xl list-none p-0 m-0">
-            <BlogRecipeItem item={transformedRecipe} />
-          </ul>
+          <hr class="border-white/10" />
+          <section class="py-12 flex flex-col gap-6">
+            <h2 class="font-display font-medium text-3xl text-white">
+              Recipes
+            </h2>
+            <p class="text-white/70 leading-relaxed">
+              I enjoy the challenge of creating recipes that are as easy to cook
+              as possible. They are not complicated or fancy but they do use
+              ingredients in standard UK supermarket package sizes and generate
+              as little washing up as possible.
+            </p>
+            <ul class="w-full list-none p-0 m-0">
+              <BlogRecipeItem item={transformedRecipe} />
+            </ul>
+            <div class="flex justify-center">
+              <Button variant="secondary" href="/recipes">
+                View all recipes
+              </Button>
+            </div>
+          </section>
         </>
       )
     }
@@ -110,46 +131,53 @@ const latestExperience = experiences[latestExperienceIndex]?.data;
     {
       transformedBlogPost != null && (
         <>
-          <Button variant="secondary" href="/blog">
-            <h2 class="px-2 py-1">Blog</h2>
-          </Button>
-          <p class="text-white/70 leading-relaxed max-w-2xl text-center">
-            I am also trying to improve my technical writing and document the
-            most interesting technical projects I have worked on. You can read
-            my latest blog post by clicking on the card below or see all posts
-            by going to the{" "}
-            <a href="/blog" class="text-primary hover:underline">
-              blog page.
-            </a>{" "}
-            If you have any feedback on any of the posts I'd love to hear it.
-          </p>
-          <ul class="w-full max-w-2xl list-none p-0 m-0">
-            <BlogRecipeItem item={transformedBlogPost} />
-          </ul>
+          <hr class="border-white/10" />
+          <section class="py-12 flex flex-col gap-6">
+            <h2 class="font-display font-medium text-3xl text-white">Blog</h2>
+            <p class="text-white/70 leading-relaxed">
+              I am also trying to improve my technical writing and document the
+              most interesting technical projects I have worked on. If you have
+              any feedback on any of the posts I'd love to hear it.
+            </p>
+            <ul class="w-full list-none p-0 m-0">
+              <BlogRecipeItem item={transformedBlogPost} />
+            </ul>
+            <div class="flex justify-center">
+              <Button variant="secondary" href="/blog">
+                View all posts
+              </Button>
+            </div>
+          </section>
         </>
       )
     }
 
     {
-      latestExperience != null && (
+      transformedExperience != null && (
         <>
-          <Button variant="secondary" href="/experience">
-            <h2 class="px-2 py-1">Experience</h2>
-          </Button>
-          <p class="text-white/70 leading-relaxed max-w-2xl text-center">
-            I started my career in IT but rapidly discovered that scripting was
-            far more interesting than turning computers off and on again.
-            PowerShell scripting soon led to C# and .Net desktop applications,
-            but the world of custom MSIs and WPF felt constrained so I taught
-            myself JavaScript and React and I haven't looked back. My
-            latest/current role is displayed below, to see my past roles please{" "}
-            <a href="/experience" class="text-primary hover:underline">
-              click here.
-            </a>
-          </p>
-          <Job data={latestExperience} />
+          <hr class="border-white/10" />
+          <section class="py-12 flex flex-col gap-6">
+            <h2 class="font-display font-medium text-3xl text-white">
+              Experience
+            </h2>
+            <p class="text-white/70 leading-relaxed">
+              I started my career in IT but rapidly discovered that scripting
+              was far more interesting than turning computers off and on again.
+              PowerShell scripting soon led to C# and .Net desktop applications,
+              but the world of custom MSIs and WPF felt constrained so I taught
+              myself JavaScript and React and I haven't looked back since.
+            </p>
+            <ul class="w-full list-none p-0 m-0">
+              <BlogRecipeItem item={transformedExperience} />
+            </ul>
+            <div class="flex justify-center">
+              <Button variant="secondary" href="/experience">
+                View full experience
+              </Button>
+            </div>
+          </section>
         </>
       )
     }
-  </Section>
+  </div>
 </Root>

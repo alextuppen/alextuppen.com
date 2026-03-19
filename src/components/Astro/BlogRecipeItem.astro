@@ -4,6 +4,7 @@ export interface ListItem {
   title: string;
   src: string | undefined;
   alt: string | undefined;
+  subtitle?: string | undefined;
   description: string;
   keywords?: string[] | undefined;
 }
@@ -12,7 +13,7 @@ interface Props {
   item: ListItem;
 }
 
-const { item: { href, title, src, alt, description } } = Astro.props;
+const { item: { href, title, src, alt, subtitle, description } } = Astro.props;
 ---
 
 <li class="w-full">
@@ -43,11 +44,12 @@ const { item: { href, title, src, alt, description } } = Astro.props;
         </div>
       )
     }
-    <div class="p-5 flex flex-col gap-2 text-left">
+    <div class="p-5 flex flex-col gap-1 text-left">
       <h2 class="text-lg font-semibold group-hover:underline group-hover:decoration-primary">
         {title}
       </h2>
-      <p class="text-white/60 text-sm leading-relaxed">{description}</p>
+      {subtitle && <p class="text-white/80 text-base font-medium">{subtitle}</p>}
+      <p class="text-white/50 text-sm leading-relaxed mt-0.5">{description}</p>
     </div>
   </a>
 </li>

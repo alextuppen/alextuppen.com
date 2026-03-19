@@ -40,6 +40,7 @@ export const technologyAlternativeSchema = z.object({
 });
 
 export const jobSchema = educationSchema.extend({
+  image: z.string().optional(),
   technologies: z
     .array(z.union([technologySchema, technologyAlternativeSchema]))
     .optional(),

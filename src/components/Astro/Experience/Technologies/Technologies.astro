@@ -11,29 +11,34 @@ const { technologies } = Astro.props;
 const lookUpTechnologies = (technologies: Technologies) =>
   technologies.map((tech) => {
     if (typeof tech === "string") {
-      return {
-        src: technologyDictionary[tech].src,
-        title: technologyDictionary[tech].title,
-        alt: technologyDictionary[tech].alt,
-      };
+      const entry = technologyDictionary[tech];
+      return { src: entry?.src, title: entry?.title, alt: entry?.alt };
     }
-    return {
-      src: technologyDictionary[tech.key].src,
-      title: tech.title,
-      alt: tech.alt,
-    };
+    const entry = technologyDictionary[tech.key];
+    return { src: entry?.src, title: tech.title, alt: tech.alt };
   });
 
 const lookedUpTechs = lookUpTechnologies(technologies);
+const visibleTechs = lookedUpTechs.slice(0, 7);
+const overflowTechs = lookedUpTechs.slice(7);
 ---
 
-<ul class="flex flex-wrap gap-3 p-4 sm:px-8 bg-surface-2 border-t border-primary/60 list-none m-0 sm:rounded-b-xl">
-  {
-    lookedUpTechs.map(({ title, src, alt }) => (
-      <li class="flex items-center gap-2">
-        <img src={src} alt={alt} class="w-5 h-5 object-contain" />
-        <span class="text-xs text-white/70">{title}</span>
-      </li>
-    ))
-  }
+<ul class="flex flex-wrap gap-3 p-4 sm:px-8 bg-surface-3 border-t border-white/10 list-none m-0 sm:rounded-b-xl">
+  {visibleTechs.map(({ title, src, alt }) => (
+    <li class="flex items-center gap-2">
+      <img src={src} alt={alt} class="w-5 h-5 object-contain" />
+      <span class="text-xs text-white/70">{title}</span>
+    </li>
+  ))}
+  {overflowTechs.map(({ title, src, alt }) => (
+    <li class="hidden items-center gap-2" data-skill-overflow>
+      <img src={src} alt={alt} class="w-5 h-5 object-contain" />
+      <span class="text-xs text-white/70">{title}</span>
+    </li>
+  ))}
+  {overflowTechs.length > 0 && (
+    <li class="flex items-center" data-skills-more>
+      <button class="text-xs text-primary bg-surface-4 rounded-full px-2 py-0.5 hover:bg-surface-5 transition-colors">+{overflowTechs.length} more</button>
+    </li>
+  )}
 </ul>

@@ -8,20 +8,100 @@ interface Props {
 }
 
 const {
-  data: { description, details, technologies },
+  data: { description, details, technologies, image },
 } = Astro.props;
 ---
 
-<div class="w-full bg-surface-1 rounded-xl overflow-hidden text-left max-w-2xl">
-  <ExpEduDetails details={details} month={true} />
+<div class="w-full bg-surface-1 rounded-xl overflow-hidden text-left" data-job-card>
+  <div class="flex items-start justify-between gap-4">
+    <ExpEduDetails details={details} month={true} />
+    {image && (
+      <div class="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-lg shrink-0 m-4 flex items-center justify-center overflow-hidden">
+        <img
+          src={image}
+          alt={details.organisation}
+          class="w-full h-full object-contain"
+        />
+      </div>
+    )}
+  </div>
   {
     description && description.length > 0 ? (
-      <p class="px-6 pb-6 text-sm text-white/70 whitespace-pre-line leading-relaxed">
-        {description.join("")}
-      </p>
+      <div class="px-6 pb-6">
+        <div data-job-desc class="relative overflow-hidden transition-[max-height] duration-300 ease-in-out" style="max-height: 5rem">
+          <p class="text-sm text-white/70 whitespace-pre-line leading-relaxed">
+            {description.join("")}
+          </p>
+          <div data-job-fade class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-surface-1 to-transparent pointer-events-none"></div>
+        </div>
+        <button data-job-toggle data-expanded="false" class="mt-2 text-sm text-primary hover:underline">
+          Show more
+        </button>
+      </div>
     ) : (
       <p class="px-6 pb-6 text-sm text-white/40 italic">Description coming soon!</p>
     )
   }
   {technologies && <Technologies technologies={technologies} />}
 </div>
+
+<script>
+  document.querySelectorAll("[data-job-card]").forEach((card) => {
+    const desc = card.querySelector("[data-job-desc]") as HTMLElement | null;
+    const fade = card.querySelector("[data-job-fade]") as HTMLElement | null;
+    const toggle = card.querySelector("[data-job-toggle]") as HTMLButtonElement | null;
+    const skillsMore = card.querySelector("[data-skills-more]") as HTMLElement | null;
+    const overflowSkills = card.querySelectorAll("[data-skill-overflow]") as NodeListOf<HTMLElement>;
+
+    if (desc && desc.scrollHeight <= 110) {
+      toggle?.classList.add("hidden");
+      desc.style.maxHeight = "none";
+      fade?.classList.add("hidden");
+    }
+
+    function expand() {
+      if (desc) desc.style.maxHeight = desc.scrollHeight + "px";
+      fade?.classList.add("hidden");
+      if (toggle) toggle.textContent = "Show less";
+      if (skillsMore) skillsMore.style.display = "none";
+      overflowSkills.forEach((el, i) => {
+        el.style.display = "flex";
+        el.style.opacity = "0";
+        el.style.transform = "translateY(-4px)";
+        el.style.transition = `opacity 0.15s ease ${i * 15}ms, transform 0.15s ease ${i * 15}ms`;
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          el.style.opacity = "1";
+          el.style.transform = "translateY(0)";
+        }));
+      });
+    }
+
+    function collapse() {
+      if (desc) desc.style.maxHeight = "5rem";
+      fade?.classList.remove("hidden");
+      if (toggle) toggle.textContent = "Show more";
+      const lastIndex = overflowSkills.length - 1;
+      overflowSkills.forEach((el, i) => {
+        const delay = (lastIndex - i) * 15;
+        el.style.transition = `opacity 0.15s ease ${delay}ms, transform 0.15s ease ${delay}ms`;
+        el.style.opacity = "0";
+        el.style.transform = "translateY(-4px)";
+      });
+      setTimeout(() => {
+        if (skillsMore) skillsMore.style.display = "";
+        overflowSkills.forEach((el) => {
+          el.style.display = "";
+          el.style.opacity = "";
+          el.style.transform = "";
+          el.style.transition = "";
+        });
+      }, lastIndex * 15 + 160);
+    }
+
+    toggle?.addEventListener("click", () => {
+      toggle.textContent?.trim() === "Show less" ? collapse() : expand();
+    });
+
+    skillsMore?.querySelector("button")?.addEventListener("click", expand);
+  });
+</script>
