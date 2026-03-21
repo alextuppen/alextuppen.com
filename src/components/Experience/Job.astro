@@ -14,7 +14,7 @@ const {
 
 <div class="w-full bg-surface-1 rounded-xl overflow-hidden text-left" data-job-card>
   <div class="flex items-start justify-between gap-4">
-    <ExpEduDetails details={details} month={true} />
+    <ExpEduDetails details={details} showMonth={true} />
     {image && (
       <div class="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-lg shrink-0 m-4 flex items-center justify-center overflow-hidden">
         <img
@@ -99,7 +99,11 @@ const {
     }
 
     toggle?.addEventListener("click", () => {
-      toggle.textContent?.trim() === "Show less" ? collapse() : expand();
+      if (toggle.textContent?.trim() === "Show less") {
+        collapse();
+      } else {
+        expand();
+      }
     });
 
     skillsMore?.querySelector("button")?.addEventListener("click", expand);

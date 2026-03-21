@@ -7,25 +7,25 @@ const YEAR_FORMAT = "YYYY";
 
 interface Props {
   details: ReturnType<(typeof expEduDetailsSchema)["parse"]>;
-  month: boolean;
+  showMonth: boolean;
 }
 
 const {
   details: { title, organisation, startDate, endDate, location, roleType },
-  month,
+  showMonth,
 } = Astro.props;
 
 const parsedStartDate = dayjs(startDate);
 const parsedEndDate = dayjs(endDate);
 
-const formattedStartDate = month
+const formattedStartDate = showMonth
   ? parsedStartDate.format(MONTH_FORMAT)
   : parsedStartDate.format(YEAR_FORMAT);
 
 const formattedEndDate =
   endDate == null
     ? "Present"
-    : month
+    : showMonth
       ? parsedEndDate.format(MONTH_FORMAT)
       : parsedEndDate.format(YEAR_FORMAT);
 ---

@@ -15,6 +15,7 @@ const { className, ...rest } = Astro.props;
   height="1em"
   width="1em"
   class={className ? className : undefined}
+  aria-hidden="true"
   {...rest}
 >
   <path

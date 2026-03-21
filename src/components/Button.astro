@@ -7,7 +7,7 @@ interface Props {
   external?: boolean;
 }
 
-const { id, className, variant = "text", href, external = false, ...rest } =
+const { id, className, variant = "primary", href, external = false, ...rest } =
   Astro.props;
 
 const base = "inline-flex items-center justify-center cursor-pointer select-none transition-all duration-200 active:translate-y-0.5 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2";

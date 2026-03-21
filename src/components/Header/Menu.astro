@@ -96,5 +96,12 @@ const isActive = (link: string) =>
         setOpen(false);
       }
     });
+
+    document.addEventListener("keydown", (e) => {
+      if (open && e.key === "Escape") {
+        setOpen(false);
+        button.focus();
+      }
+    });
   }
 </script>
