@@ -2,26 +2,53 @@
 import { Root } from "../../layouts";
 import { SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
-import { BlogRecipeList, Section } from "../../components";
+import { BlogRecipeList } from "../../components";
 
 const posts = await getCollection("blog");
 const sortedPosts = posts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const transformedPosts = sortedPosts.map(
-  ({ id, data: { heroImage, heroImageText, title, description } }) => ({
+  ({ id, data: { heroImage, heroImageText, title, description, pubDate } }) => ({
     href: `/blog/${id}`,
     title,
     src: heroImage,
     alt: heroImageText,
+    date: pubDate.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
     description,
   }),
 );
 ---
 
 <Root title="Alex Tuppen | Blog" description={SITE_DESCRIPTION}>
-  <Section>
-    <h1 class="text-4xl font-display font-medium">Blog</h1>
-    <BlogRecipeList list={transformedPosts} />
-  </Section>
+  <div class="w-full max-w-4xl mx-auto px-4">
+    <section class="py-12 flex flex-col gap-6">
+      <div class="flex items-center gap-8">
+        <div class="flex flex-col gap-4 flex-1">
+          <h1 class="font-display font-medium text-3xl text-white">Blog</h1>
+          <p class="text-white/70 leading-relaxed max-w-prose">
+            I am trying to improve my technical writing and document the most
+            interesting projects I have worked on. Posts cover topics across the
+            full stack — architecture decisions, patterns I've found useful, and
+            the occasional deep dive into something that took longer to figure out
+            than it should have. If you have any feedback I'd love to hear it.
+          </p>
+          <div class="relative w-[26rem]">
+            <input
+              id="blog-recipe-search"
+              type="text"
+              placeholder={`Search ${transformedPosts.length} posts...`}
+              autocomplete="off"
+              class="w-full pl-4 pr-10 py-2 bg-surface-1 border border-white/10 rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary/60 transition-colors"
+            />
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+            </svg>
+          </div>
+        </div>
+        <img src="/logo/white.svg" alt="Alex Tuppen logo" class="w-20 opacity-20 shrink-0 mr-4 hidden md:block" />
+      </div>
+      <BlogRecipeList list={transformedPosts} showSearch={false} />
+    </section>
+  </div>
 </Root>

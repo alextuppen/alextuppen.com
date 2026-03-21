@@ -1,6 +1,6 @@
 ---
 import { Root } from "../../layouts";
-import { BlogRecipeList, Section } from "../../components";
+import { BlogRecipeList } from "../../components";
 import { SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 
@@ -24,14 +24,16 @@ const transformedRecipes = sortedRecipes.map(
 ---
 
 <Root title={"Alex Tuppen | Recipes"} description={SITE_DESCRIPTION}>
-  <Section>
-    <h1 class="text-4xl font-display font-medium">Recipes</h1>
-    <p class="text-white/70 leading-relaxed max-w-2xl text-center">
-      I enjoy the challenge of creating recipes that are as easy to cook as
-      possible. They are not complicated or fancy but they do use ingredients in
-      standard UK supermarket sizes and generate as little washing up as
-      possible. Please let me know what you think if you cook one of them!
-    </p>
-    <BlogRecipeList list={transformedRecipes} />
-  </Section>
+  <div class="w-full max-w-4xl mx-auto px-4">
+    <section class="py-12 flex flex-col gap-6">
+      <h1 class="font-display font-medium text-3xl text-white">Recipes</h1>
+      <p class="text-white/70 leading-relaxed">
+        I enjoy the challenge of creating recipes that are as easy to cook as
+        possible. They are not complicated or fancy but they do use ingredients in
+        standard UK supermarket sizes and generate as little washing up as
+        possible. Please let me know what you think if you cook one of them!
+      </p>
+      <BlogRecipeList list={transformedRecipes} />
+    </section>
+  </div>
 </Root>
