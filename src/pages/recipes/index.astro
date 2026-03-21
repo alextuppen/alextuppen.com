@@ -1,6 +1,6 @@
 ---
 import { Root } from "../../layouts";
-import { BlogRecipeList } from "../../components";
+import { BlogRecipeList, SearchInput } from "../../components";
 import { SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 
@@ -8,32 +8,46 @@ const recipes = await getCollection("recipes");
 const sortedRecipes = recipes.sort((a, b) =>
   a.data.datePublished < b.data.datePublished ? 1 : -1,
 );
-const transformedRecipes = sortedRecipes.map(
-  ({ id, data: { name, description, image, keywords } }) => {
-    const splitKeywords = keywords.split(", ");
-    return {
-      href: `/recipes/${id}`,
-      title: name,
-      src: image ? image[0] : undefined,
-      alt: name,
-      description,
-      keywords: splitKeywords,
-    };
-  },
+const favouriteCount = sortedRecipes.filter((r) => r.data.favourite === true).length;
+const allRecipes = sortedRecipes.map(
+  ({ id, data: { name, description, image, keywords, favourite } }) => ({
+    href: `/recipes/${id}`,
+    title: name,
+    src: image ? image[0] : undefined,
+    alt: name,
+    description,
+    keywords: keywords.split(", "),
+    isFeatured: favourite === true,
+  }),
 );
+const transformedRecipes = [
+  ...allRecipes.filter((r) => r.isFeatured),
+  ...allRecipes.filter((r) => !r.isFeatured),
+];
 ---
 
 <Root title={"Alex Tuppen | Recipes"} description={SITE_DESCRIPTION}>
   <div class="w-full max-w-4xl mx-auto px-4">
     <section class="py-12 flex flex-col gap-6">
-      <h1 class="font-display font-medium text-3xl text-white">Recipes</h1>
-      <p class="text-white/70 leading-relaxed">
-        I enjoy the challenge of creating recipes that are as easy to cook as
-        possible. They are not complicated or fancy but they do use ingredients in
-        standard UK supermarket sizes and generate as little washing up as
-        possible. Please let me know what you think if you cook one of them!
-      </p>
-      <BlogRecipeList list={transformedRecipes} />
+      <div class="flex items-start gap-8">
+        <div class="flex flex-col gap-4 min-w-0" style="max-width: 65ch">
+          <h1 class="font-display font-medium text-3xl text-white">Recipes</h1>
+          <p class="text-white/70 leading-relaxed">
+            I enjoy the challenge of creating recipes that are as easy to cook as
+            possible. They are not complicated or fancy but they do use ingredients in
+            standard UK supermarket sizes and generate as little washing up as
+            possible. Please let me know what you think if you cook one of them!
+          </p>
+          <SearchInput
+            id="blog-recipe-search"
+            placeholder={`Search ${transformedRecipes.length} ${transformedRecipes.length === 1 ? "recipe" : "recipes"}...`}
+          />
+        </div>
+        <div class="flex-1 self-stretch flex items-center justify-center hidden md:flex">
+          <img src="/logo/white.svg" alt="Alex Tuppen logo" class="w-20 opacity-20" />
+        </div>
+      </div>
+      <BlogRecipeList list={transformedRecipes} noun="recipe" showSearch={false} featuredLabel="Favourite" featuredCount={favouriteCount} />
     </section>
   </div>
 </Root>

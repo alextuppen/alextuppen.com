@@ -1,7 +1,7 @@
 ---
 interface Props {
   id?: string;
-  variant?: "primary" | "text";
+  variant?: "primary" | "text" | "subtle";
 }
 
 const { id, variant = "primary" } = Astro.props;
@@ -11,6 +11,10 @@ const { id, variant = "primary" } = Astro.props;
   id={id}
   class:list={[
     "border-0 border-b mx-8",
-    variant === "primary" ? "border-primary" : "border-white",
+    variant === "primary"
+      ? "border-primary"
+      : variant === "subtle"
+        ? "border-white/10"
+        : "border-white",
   ]}
 />

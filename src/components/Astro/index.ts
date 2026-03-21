@@ -5,6 +5,7 @@ import Button from "./Button.astro";
 import Footer from "./Footer.astro";
 import FormattedDate from "./FormattedDate.astro";
 import HorizontalSeperator from "./HorizontalSeperator.astro";
+import SearchInput from "./SearchInput.astro";
 import Section from "./Section.astro";
 
 export { Education, Job } from "./Experience";
@@ -19,5 +20,6 @@ export {
   Footer,
   FormattedDate,
   HorizontalSeperator,
+  SearchInput,
   Section,
 };

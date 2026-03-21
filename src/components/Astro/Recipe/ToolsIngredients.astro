@@ -9,14 +9,14 @@ interface Props {
 const { tool, recipeIngredient } = Astro.props;
 ---
 
-<div class="flex flex-col gap-6 lg:h-max lg:bg-surface-1 lg:rounded-xl lg:p-6 lg:min-w-64">
+<div class="flex flex-col gap-6 lg:h-max lg:min-w-64">
   <div class="px-4 lg:px-0">
-    <h2 class="text-xl font-display font-medium text-center mb-5">Tools</h2>
+    <h2 class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4">Tools</h2>
     <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-2 p-0">
       {
         tool.map(({ name }) => (
           <li class="flex items-center gap-3 text-left">
-            <img src="/logo/bulletPoints/white.svg" class="w-4 h-4 shrink-0" alt="" />
+            <span class="w-1.5 h-1.5 rounded-full bg-white/30 shrink-0"></span>
             <span class="text-sm text-white/80">{name}</span>
           </li>
         ))
@@ -24,15 +24,15 @@ const { tool, recipeIngredient } = Astro.props;
     </ul>
   </div>
 
-  <hr class="border-white/10" />
+  <hr class="border-white/20" />
 
   <div class="px-4 lg:px-0">
-    <h2 class="text-xl font-display font-medium text-center mb-5">Ingredients</h2>
+    <h2 class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-4">Ingredients</h2>
     <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-2 p-0">
       {
         recipeIngredient.map((ingredient) => (
           <li class="flex items-center gap-3 text-left">
-            <img src="/logo/bulletPoints/white.svg" class="w-4 h-4 shrink-0" alt="" />
+            <span class="w-1.5 h-1.5 rounded-full bg-white/30 shrink-0"></span>
             <span class="text-sm text-white/80">{ingredient}</span>
           </li>
         ))

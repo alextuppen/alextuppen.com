@@ -11,6 +11,7 @@ export {
   Hero,
   HorizontalSeperator,
   Job,
+  SearchInput,
   Method,
   Section,
   TimesServes,

@@ -1,0 +1,29 @@
+---
+interface Props {
+  id: string;
+  placeholder: string;
+  class?: string;
+}
+
+const { id, placeholder, class: className = "w-full max-w-[26rem]" } = Astro.props;
+---
+
+<div class={`relative ${className}`}>
+  <input
+    id={id}
+    type="text"
+    placeholder={placeholder}
+    autocomplete="off"
+    class="w-full pl-4 pr-10 py-2 bg-surface-1 border border-white/10 rounded-lg text-sm text-white placeholder-white/30 focus:outline-none focus:border-primary/60 transition-colors"
+  />
+  <svg
+    class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary pointer-events-none"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="2"
+    stroke="currentColor"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+  </svg>
+</div>

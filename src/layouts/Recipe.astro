@@ -3,7 +3,6 @@ import type { CollectionEntry } from "astro:content";
 import { Root } from "../layouts";
 import {
   Draft,
-  HorizontalSeperator,
   Method,
   TimesServes,
   ToolsIngredients,
@@ -27,28 +26,28 @@ const {
 ---
 
 <Root title={name} description={description}>
-  <article class="w-full max-w-6xl mx-auto px-4 py-10 flex flex-col gap-8">
-    <div class="flex flex-col items-center gap-4">
-      {
-        image != null && image[0] != null && (
-          <img
-            width="300"
-            height="300"
-            src={image[0]}
-            alt={name}
-            class="w-4/5 sm:w-1/2 lg:w-1/3 rounded-2xl shadow-xl shadow-black/40"
-          />
-        )
-      }
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-medium text-center">
+  <article class="w-full max-w-4xl mx-auto px-4 py-10 flex flex-col gap-6">
+    {
+      image != null && image[0] != null && (
+        <img
+          width="900"
+          height="500"
+          src={image[0]}
+          alt={name}
+          class="w-full rounded-2xl shadow-xl shadow-black/40 object-cover h-64 sm:h-[21.25rem] lg:h-[26.75rem] mx-auto block"
+        />
+      )
+    }
+
+    <div class="flex flex-col gap-3">
+      <Draft creativeWorkStatus={creativeWorkStatus} />
+      <h1 class="text-3xl sm:text-4xl lg:text-6xl font-display font-medium">
         {name}
       </h1>
+      <p class="text-white/80 leading-relaxed">{description}</p>
     </div>
 
-    <div class="flex flex-col gap-4 bg-surface-1 rounded-xl p-6 max-w-2xl w-full mx-auto">
-      <Draft creativeWorkStatus={creativeWorkStatus} />
-      <p class="text-center text-white/80">{description}</p>
-      <HorizontalSeperator variant="primary" />
+    <div class="bg-surface-1 rounded-lg px-4 py-5">
       <TimesServes
         prepTime={prepTime}
         cookTime={cookTime}

@@ -10,14 +10,9 @@ const { creativeWorkStatus } = Astro.props;
 
 {
   creativeWorkStatus === "draft" && (
-    <div class="flex items-start gap-4 p-4 bg-surface-3 border border-primary/30 rounded-lg">
-      <ExclamationCircle className="w-8 h-8 text-primary shrink-0 mt-0.5" />
-      <div class="text-left">
-        <h3 class="font-semibold text-white mb-1">Draft recipe</h3>
-        <span class="text-sm text-white/70">
-          This recipe is in draft state; it is unfinished and still being refined.
-        </span>
-      </div>
+    <div class="self-start inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/30 rounded-full text-xs text-primary font-medium">
+      <ExclamationCircle className="w-3.5 h-3.5 shrink-0" />
+      Draft — work in progress
     </div>
   )
 }

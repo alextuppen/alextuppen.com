@@ -28,16 +28,16 @@ const items = [
 ];
 ---
 
-<dl class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-3 text-sm mx-auto">
+<div class="grid grid-cols-2 md:grid-cols-[repeat(4,8rem)] gap-x-8 gap-y-4 text-sm mx-auto w-fit">
   {
     items.map(({ Icon, label, value }) => (
-      <>
-        <dt class="flex items-center justify-end gap-2 text-white/60">
-          <Icon className="w-4 h-4" />
-          <span>{label}:</span>
-        </dt>
-        <dd class="text-white">{value}</dd>
-      </>
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center gap-1.5 text-white/50 text-xs uppercase tracking-wider">
+          <Icon className="w-3.5 h-3.5 shrink-0" />
+          <span>{label}</span>
+        </div>
+        <span class="text-white font-medium">{value}</span>
+      </div>
     ))
   }
-</dl>
+</div>

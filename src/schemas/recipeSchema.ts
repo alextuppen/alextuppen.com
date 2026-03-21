@@ -19,6 +19,7 @@ export const recipeSchema = z.object({
   cookTime: z.string(),
   totalTime: z.string(),
   keywords: z.string(),
+  favourite: z.boolean().optional(),
   recipeYield: z.number(),
   recipeCategory: z.literal("Weeknight meal"),
   recipeIngredient: z.string().array(),

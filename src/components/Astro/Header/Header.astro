@@ -14,11 +14,15 @@ export const externalLinks = [
   { link: URL_INSTAGRAM, text: "Instagram" },
   { link: URL_GITHUB, text: "Github" },
 ];
+
+const pathname = Astro.url.pathname;
+const isActive = (link: string) =>
+  pathname === link || pathname.startsWith(link + "/");
 ---
 
 <header class="sticky top-0 z-50 bg-surface-6/95 backdrop-blur-sm border-b border-white/10">
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-    <Button href="/" variant="text" className="min-w-0 flex items-center gap-3 !no-underline group">
+    <Button href="/" variant="text" className="min-w-0 flex items-center gap-3 group">
       <img
         src="/logo/white.svg"
         alt="Alex Tuppen logo"
@@ -30,32 +34,38 @@ export const externalLinks = [
     </Button>
 
     <!-- Desktop nav -->
-    <nav class="hidden md:flex items-center gap-1">
-      {
-        internalLinks.map(({ link, text }, i) => (
-          <>
-            <Button href={link} variant="text" className="px-3 py-1 text-sm font-medium text-white/80 hover:text-white">
+    <nav class="hidden md:flex items-center gap-6">
+      <div class="flex items-center gap-1">
+        {
+          internalLinks.map(({ link, text }) => (
+            <Button
+              href={link}
+              variant="text"
+              className={`px-3 py-1 text-sm font-medium transition-colors ${
+                isActive(link)
+                  ? "text-primary cursor-default pointer-events-none"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
               {text}
             </Button>
-            {i < internalLinks.length - 1 && (
-              <span class="text-white/20">|</span>
-            )}
-          </>
-        ))
-      }
-      <span class="text-primary mx-2">|</span>
-      {
-        externalLinks.map(({ link, text }, i) => (
-          <>
-            <Button href={link} variant="text" external className="px-3 py-1 text-sm font-medium text-white/80 hover:text-white">
+          ))
+        }
+      </div>
+      <div class="flex items-center gap-1">
+        {
+          externalLinks.map(({ link, text }) => (
+            <Button
+              href={link}
+              variant="text"
+              external
+              className="px-3 py-1 text-sm font-medium text-white/60 hover:text-white transition-colors"
+            >
               {text}
             </Button>
-            {i < externalLinks.length - 1 && (
-              <span class="text-white/20">|</span>
-            )}
-          </>
-        ))
-      }
+          ))
+        }
+      </div>
     </nav>
 
     <!-- Mobile burger -->
