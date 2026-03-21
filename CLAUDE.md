@@ -33,8 +33,8 @@ Personal website for Alex Tuppen. Hosted on Cloudflare Pages.
 - `src/layouts/BlogPost.astro` — blog post layout, uses `prose prose-invert` for MDX content
 - `src/layouts/Recipe.astro` — recipe detail layout
 - `src/pages/` — file-based routing
-- `src/components/Astro/BlogRecipeList.astro` — search/filter list (Fuse.js, vanilla JS)
-- `src/components/Astro/BlogRecipeItem.astro` — single card, used on homepage
+- `src/components/BlogRecipeList.astro` — search/filter list (Fuse.js, vanilla JS)
+- `src/components/BlogRecipeItem.astro` — single card, used on homepage
 
 ## Notes
 

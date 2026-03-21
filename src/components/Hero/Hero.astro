@@ -1,7 +1,8 @@
 ---
 import Button from "../Button.astro";
 import HeroBackground from "./HeroBackground.astro";
-import { URL_LINKEDIN, URL_INSTAGRAM, URL_GITHUB } from "../../../consts";
+import { URL_LINKEDIN, URL_INSTAGRAM, URL_GITHUB } from "../../consts";
+import { LinkedIn, Instagram, Github } from "../../svg";
 ---
 
 <div class="relative w-full h-[calc(100svh-3.5rem)] overflow-hidden flex items-center justify-center border-b border-white/10">
@@ -25,13 +26,13 @@ import { URL_LINKEDIN, URL_INSTAGRAM, URL_GITHUB } from "../../../consts";
     </h2>
     <div class="flex gap-6 sm:col-start-2">
       <Button variant="largeIcon" href={URL_LINKEDIN} external>
-        <img width="48" height="48" src="/icons/websites/linkedin.svg" alt="LinkedIn logo" />
+        <LinkedIn className="w-12 h-12 text-white" />
       </Button>
       <Button variant="largeIcon" href={URL_INSTAGRAM} external>
-        <img width="48" height="48" src="/icons/websites/instagram.svg" alt="Instagram logo" />
+        <Instagram className="w-12 h-12 text-white" />
       </Button>
       <Button variant="largeIcon" href={URL_GITHUB} external>
-        <img width="48" height="48" src="/icons/websites/github.svg" alt="Github logo" />
+        <Github className="w-12 h-12 text-white" />
       </Button>
     </div>
   </div>

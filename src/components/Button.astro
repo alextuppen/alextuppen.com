@@ -2,7 +2,7 @@
 interface Props {
   id?: string;
   className?: string;
-  variant?: "primary" | "secondary" | "icon" | "largeIcon" | "text";
+  variant?: "primary" | "secondary" | "icon" | "largeIcon";
   href?: string;
   external?: boolean;
 }
@@ -17,7 +17,6 @@ const variants: Record<string, string> = {
     "px-6 py-2.5 bg-primary text-base font-semibold tracking-wide rounded-lg hover:bg-primary-dark active:bg-primary-light shadow-lg shadow-black/40",
   secondary:
     "px-6 py-2.5 border border-primary text-white font-semibold tracking-wide rounded-lg hover:bg-primary/10 hover:border-primary-dark active:bg-primary/20",
-  text: "text-white hover:underline hover:decoration-primary hover:decoration-double hover:decoration-[0.1rem]",
   icon: "w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-[3.4rem] lg:h-[3.4rem]",
   largeIcon:
     "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20",

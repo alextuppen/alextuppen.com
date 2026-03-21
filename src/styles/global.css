@@ -20,3 +20,9 @@
   --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
 }
+
+@layer base {
+  button {
+    cursor: pointer;
+  }
+}

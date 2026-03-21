@@ -1,0 +1,91 @@
+---
+import { URL_LINKEDIN, URL_INSTAGRAM, URL_GITHUB } from "../../consts";
+import { LinkedIn, Instagram, Github, CookingPot, Pencil, Computer } from "../../svg";
+import Menu from "./Menu.astro";
+
+export const internalLinks = [
+  { link: "/recipes", text: "Recipes", Icon: CookingPot },
+  { link: "/blog", text: "Blog", Icon: Pencil },
+  { link: "/experience", text: "Experience", Icon: Computer },
+];
+
+export const externalLinks = [
+  { link: URL_LINKEDIN, text: "LinkedIn", Icon: LinkedIn },
+  { link: URL_INSTAGRAM, text: "Instagram", Icon: Instagram },
+  { link: URL_GITHUB, text: "Github", Icon: Github },
+];
+
+const pathname = Astro.url.pathname;
+const isActive = (link: string) =>
+  pathname === link || pathname.startsWith(link + "/");
+---
+
+<header class="sticky top-0 z-50 bg-surface-6/95 backdrop-blur-sm border-b border-white/10">
+  <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="/" class="min-w-0 inline-flex items-center gap-3 group focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2">
+      <img
+        src="/logo/white.svg"
+        alt="Alex Tuppen logo"
+        class="h-8 w-auto"
+      />
+      <span class="font-display font-medium text-xl sm:text-2xl text-white group-hover:text-primary transition-colors truncate">
+        Alex Tuppen
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center gap-3">
+      <div class="flex items-center gap-1">
+        {
+          internalLinks.map((item) => {
+            const active = isActive(item.link);
+            return (
+              <a
+                href={item.link}
+                class={`px-3 py-1.5 rounded text-sm transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 ${
+                  active
+                    ? "text-primary font-semibold cursor-default pointer-events-none"
+                    : "font-medium text-white/60 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                {/* Invisible bold clone prevents layout shift on active */}
+                <span class="flex flex-col items-center">
+                  <span class="font-semibold invisible h-0 overflow-hidden select-none" aria-hidden="true">{item.text}</span>
+                  <span>{item.text}</span>
+                </span>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      <!-- Divider -->
+      <span class="border-l border-white/20 h-4" aria-hidden="true"></span>
+
+      <div class="flex items-center gap-1">
+        {
+          externalLinks.map((item) => {
+            const Icon = item.Icon;
+            return (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={item.text}
+                title={item.text}
+                class="p-2 rounded text-white/60 hover:text-white hover:bg-white/5 transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 inline-flex items-center"
+              >
+                <Icon className="w-4 h-4" />
+              </a>
+            );
+          })
+        }
+      </div>
+    </nav>
+
+    <!-- Mobile burger -->
+    <div class="relative shrink-0 md:hidden">
+      <Menu />
+    </div>
+  </div>
+</header>

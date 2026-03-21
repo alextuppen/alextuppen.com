@@ -2,7 +2,7 @@ import type { z } from "astro:content";
 import type {
   technologySchema,
   technologyAlternativeSchema,
-} from "../../../../schemas";
+} from "../../../schemas";
 
 export type Technology = z.infer<typeof technologySchema>;
 
