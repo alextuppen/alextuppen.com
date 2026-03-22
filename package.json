@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
@@ -29,9 +30,18 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.6.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1",
     "typescript-eslint": "^8.57.1"
+  },
+  "lint-staged": {
+    "*.{js,ts,mjs,cjs,astro}": [
+      "eslint --max-warnings 0",
+      "prettier --write"
+    ],
+    "*.{json,md,css,yaml,yml}": "prettier --write"
   },
   "packageManager": "pnpm@10.28.1",
   "pnpm": {
