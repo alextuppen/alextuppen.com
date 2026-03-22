@@ -4,6 +4,7 @@ import { BlogRecipeItem, Button, Hero } from "../components";
 
 import { SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
+import { formatShortDate } from "../components/FormattedDate.astro";
 
 const recipes = await getCollection("recipes");
 const recipe = recipes.find(
@@ -72,9 +73,7 @@ const latestExperience = experiences[latestExperienceIndex]?.data;
 let transformedExperience;
 if (latestExperience != null) {
   const { details } = latestExperience;
-  const fmt = (d: Date) =>
-    d.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
-  const dateRange = `${fmt(details.startDate)} – ${details.endDate != null ? fmt(details.endDate) : "Present"}`;
+  const dateRange = `${formatShortDate(details.startDate)} – ${details.endDate != null ? formatShortDate(details.endDate) : "Present"}`;
   transformedExperience = {
     href: "/experience",
     title: details.title,

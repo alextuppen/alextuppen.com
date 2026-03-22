@@ -34,7 +34,7 @@ const {
           </p>
           <div data-job-fade class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-surface-1 to-transparent pointer-events-none"></div>
         </div>
-        <button data-job-toggle data-expanded="false" class="mt-2 text-sm text-primary hover:underline">
+        <button data-job-toggle aria-expanded="false" class="mt-2 text-sm text-primary hover:underline">
           Show more
         </button>
       </div>
@@ -53,7 +53,9 @@ const {
     const skillsMore = card.querySelector("[data-skills-more]") as HTMLElement | null;
     const overflowSkills = card.querySelectorAll("[data-skill-overflow]") as NodeListOf<HTMLElement>;
 
-    if (desc && desc.scrollHeight <= 110) {
+    // 5rem max-height (80px) + ~1 line of overflow buffer
+    const COLLAPSED_HEIGHT_PX = 110;
+    if (desc && desc.scrollHeight <= COLLAPSED_HEIGHT_PX) {
       toggle?.classList.add("hidden");
       desc.style.maxHeight = "none";
       fade?.classList.add("hidden");
@@ -62,7 +64,7 @@ const {
     function expand() {
       if (desc) desc.style.maxHeight = desc.scrollHeight + "px";
       fade?.classList.add("hidden");
-      if (toggle) toggle.textContent = "Show less";
+      if (toggle) { toggle.textContent = "Show less"; toggle.setAttribute("aria-expanded", "true"); }
       if (skillsMore) skillsMore.style.display = "none";
       overflowSkills.forEach((el, i) => {
         el.style.display = "flex";
@@ -79,7 +81,7 @@ const {
     function collapse() {
       if (desc) desc.style.maxHeight = "5rem";
       fade?.classList.remove("hidden");
-      if (toggle) toggle.textContent = "Show more";
+      if (toggle) { toggle.textContent = "Show more"; toggle.setAttribute("aria-expanded", "false"); }
       const lastIndex = overflowSkills.length - 1;
       overflowSkills.forEach((el, i) => {
         const delay = (lastIndex - i) * 15;

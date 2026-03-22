@@ -1,4 +1,14 @@
 ---
+export const formatLongDate = (date: Date): string =>
+  date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+export const formatShortDate = (date: Date): string =>
+  date.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+
 interface Props {
   date: Date;
   className?: string;
@@ -8,11 +18,5 @@ const { date, className } = Astro.props;
 ---
 
 <time datetime={date.toISOString()} class={className}>
-  {
-    date.toLocaleDateString("en-gb", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-  }
+  {formatLongDate(date)}
 </time>

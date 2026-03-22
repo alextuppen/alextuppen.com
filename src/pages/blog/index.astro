@@ -3,7 +3,6 @@ import { Root } from "../../layouts";
 import { SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 import { BlogRecipeList, SearchInput } from "../../components";
-
 const posts = await getCollection("blog");
 const sortedPosts = posts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -14,7 +13,7 @@ const transformedPosts = sortedPosts.map(
     title,
     src: heroImage,
     alt: heroImageText,
-    date: pubDate.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }),
+    date: pubDate,
     description,
     isFeatured: index === 0,
   }),

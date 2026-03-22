@@ -1,10 +1,12 @@
 ---
+import FormattedDate from "./FormattedDate.astro";
+
 export interface ListItem {
   href: string;
   title: string;
   src: string | undefined;
   alt: string | undefined;
-  date?: string | undefined;
+  date?: Date | undefined;
   description: string;
   keywords?: string[] | undefined;
   isFeatured?: boolean;
@@ -63,7 +65,7 @@ const { list, featuredLabel = "Latest", featuredCount } = Astro.props;
                 </h2>
                 {item.isFeatured && <span class="text-xs text-primary bg-primary/10 rounded-full px-2.5 py-0.5 font-medium shrink-0 mt-0.5">{featuredLabel}</span>}
               </div>
-              {item.date && <p class="text-xs text-primary/80 font-medium">{item.date}</p>}
+              {item.date && <FormattedDate date={item.date} className="text-xs text-primary/80 font-medium" />}
               <p class="text-white/60 text-sm leading-relaxed">{item.description}</p>
             </div>
           </a>

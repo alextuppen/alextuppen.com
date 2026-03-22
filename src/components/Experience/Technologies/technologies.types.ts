@@ -1,12 +1,11 @@
-import type { z } from "astro:content";
 import type {
   technologySchema,
   technologyAlternativeSchema,
 } from "../../../schemas";
 
-export type Technology = z.infer<typeof technologySchema>;
+export type Technology = ReturnType<(typeof technologySchema)["parse"]>;
 
-export type TechnologyAlternative = z.infer<typeof technologyAlternativeSchema>;
+export type TechnologyAlternative = ReturnType<(typeof technologyAlternativeSchema)["parse"]>;
 
 export type Technologies = (Technology | TechnologyAlternative)[];
 
