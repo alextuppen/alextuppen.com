@@ -1,10 +1,17 @@
 ---
+
 ---
 
-<canvas id="hero-background-canvas" class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+<canvas
+  id="hero-background-canvas"
+  class="absolute inset-0 w-full h-full"
+  aria-hidden="true"></canvas>
 
 <script>
-  function debounce<T extends (...args: unknown[]) => void>(fn: T, delay: number): T {
+  function debounce<T extends (...args: unknown[]) => void>(
+    fn: T,
+    delay: number,
+  ): T {
     let timeout: ReturnType<typeof setTimeout>;
     return ((...args: unknown[]) => {
       clearTimeout(timeout);
@@ -17,7 +24,10 @@
     throw new Error("Canvas not found");
   }
 
-  const worker = new Worker(new URL("./HeroBackground.worker.ts", import.meta.url), { type: "module" });
+  const worker = new Worker(
+    new URL("./HeroBackground.worker.ts", import.meta.url),
+    { type: "module" },
+  );
 
   const offscreen = canvas.transferControlToOffscreen();
 
@@ -27,26 +37,35 @@
       canvas: offscreen,
       width: canvas.offsetWidth,
       height: canvas.offsetHeight,
-      rootFontSize: parseFloat(getComputedStyle(document.documentElement).fontSize),
+      rootFontSize: parseFloat(
+        getComputedStyle(document.documentElement).fontSize,
+      ),
     },
     [offscreen],
   );
 
-  window.addEventListener("resize", debounce(() => {
-    worker.postMessage({
-      type: "resize",
-      width: canvas.offsetWidth,
-      height: canvas.offsetHeight,
-    });
-  }, 150));
+  window.addEventListener(
+    "resize",
+    debounce(() => {
+      worker.postMessage({
+        type: "resize",
+        width: canvas.offsetWidth,
+        height: canvas.offsetHeight,
+      });
+    }, 150),
+  );
 
   document.addEventListener("visibilitychange", () => {
-    worker.postMessage({ type: document.hidden ? "visibilityPause" : "visibilityResume" });
+    worker.postMessage({
+      type: document.hidden ? "visibilityPause" : "visibilityResume",
+    });
   });
 
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
-      worker.postMessage({ type: entry.isIntersecting ? "intersectionResume" : "intersectionPause" });
+      worker.postMessage({
+        type: entry.isIntersecting ? "intersectionResume" : "intersectionPause",
+      });
     }
   });
   observer.observe(canvas);

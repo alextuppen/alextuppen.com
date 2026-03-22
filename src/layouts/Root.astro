@@ -9,7 +9,9 @@ const { title, description } = Astro.props;
   <head>
     <BaseHead title={title} description={description} />
   </head>
-  <body class="bg-base text-white font-sans min-h-full grid grid-rows-[auto_1fr_auto]">
+  <body
+    class="bg-base text-white font-sans min-h-full grid grid-rows-[auto_1fr_auto]"
+  >
     <Header />
     <main>
       <slot />

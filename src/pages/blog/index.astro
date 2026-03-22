@@ -8,7 +8,10 @@ const sortedPosts = posts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const transformedPosts = sortedPosts.map(
-  ({ id, data: { heroImage, heroImageText, title, description, pubDate } }, index) => ({
+  (
+    { id, data: { heroImage, heroImageText, title, description, pubDate } },
+    index,
+  ) => ({
     href: `/blog/${id}`,
     title,
     src: heroImage,
@@ -30,16 +33,23 @@ const transformedPosts = sortedPosts.map(
             I am trying to improve my technical writing and document the most
             interesting projects I have worked on. Posts cover topics across the
             full stack — architecture decisions, patterns I've found useful, and
-            the occasional deep dive into something that took longer to figure out
-            than it should have. If you have any feedback I'd love to hear it.
+            the occasional deep dive into something that took longer to figure
+            out than it should have. If you have any feedback I'd love to hear
+            it.
           </p>
           <SearchInput
             id="blog-recipe-search"
             placeholder={`Search ${transformedPosts.length} ${transformedPosts.length === 1 ? "post" : "posts"}...`}
           />
         </div>
-        <div class="flex-1 self-stretch flex items-center justify-center hidden md:flex">
-          <img src="/logo/white.svg" alt="Alex Tuppen logo" class="w-20 opacity-20" />
+        <div
+          class="flex-1 self-stretch flex items-center justify-center hidden md:flex"
+        >
+          <img
+            src="/logo/white.svg"
+            alt="Alex Tuppen logo"
+            class="w-20 opacity-20"
+          />
         </div>
       </div>
       <BlogRecipeList list={transformedPosts} />

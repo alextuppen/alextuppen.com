@@ -5,7 +5,9 @@ import type {
 
 export type Technology = ReturnType<(typeof technologySchema)["parse"]>;
 
-export type TechnologyAlternative = ReturnType<(typeof technologyAlternativeSchema)["parse"]>;
+export type TechnologyAlternative = ReturnType<
+  (typeof technologyAlternativeSchema)["parse"]
+>;
 
 export type Technologies = (Technology | TechnologyAlternative)[];
 

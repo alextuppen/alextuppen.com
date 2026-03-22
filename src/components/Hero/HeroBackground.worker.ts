@@ -65,7 +65,8 @@ const vertexData = new Float32Array(MAX_QUADS * FLOATS_PER_QUAD);
 const scheduleFrame: (cb: FrameRequestCallback) => number =
   typeof requestAnimationFrame !== "undefined"
     ? requestAnimationFrame.bind(self)
-    : (cb) => setTimeout(() => cb(performance.now()), 1000 / 60) as unknown as number;
+    : (cb) =>
+        setTimeout(() => cb(performance.now()), 1000 / 60) as unknown as number;
 
 const cancelFrame: (id: number) => void =
   typeof cancelAnimationFrame !== "undefined"
@@ -107,7 +108,14 @@ function buildAtlasTexture(): WebGLTexture {
   const tex = gl.createTexture();
   if (!tex) throw new Error("Could not create WebGL texture");
   gl.bindTexture(gl.TEXTURE_2D, tex);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, atlasCanvas as unknown as ImageData);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    atlasCanvas as unknown as ImageData,
+  );
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -174,9 +182,9 @@ function initWebGL(): void {
   program = prog;
   gl.useProgram(program);
 
-  positionLoc  = gl.getAttribLocation(program, "a_position");
-  texCoordLoc  = gl.getAttribLocation(program, "a_texCoord");
-  alphaLoc     = gl.getAttribLocation(program, "a_alpha");
+  positionLoc = gl.getAttribLocation(program, "a_position");
+  texCoordLoc = gl.getAttribLocation(program, "a_texCoord");
+  alphaLoc = gl.getAttribLocation(program, "a_alpha");
   isPrimaryLoc = gl.getAttribLocation(program, "a_isPrimary");
 
   const buf = gl.createBuffer();
@@ -187,11 +195,11 @@ function initWebGL(): void {
 
   const stride = 6 * 4; // 6 floats × 4 bytes
   gl.enableVertexAttribArray(positionLoc);
-  gl.vertexAttribPointer(positionLoc,  2, gl.FLOAT, false, stride, 0);
+  gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, stride, 0);
   gl.enableVertexAttribArray(texCoordLoc);
-  gl.vertexAttribPointer(texCoordLoc,  2, gl.FLOAT, false, stride, 8);
+  gl.vertexAttribPointer(texCoordLoc, 2, gl.FLOAT, false, stride, 8);
   gl.enableVertexAttribArray(alphaLoc);
-  gl.vertexAttribPointer(alphaLoc,     1, gl.FLOAT, false, stride, 16);
+  gl.vertexAttribPointer(alphaLoc, 1, gl.FLOAT, false, stride, 16);
   gl.enableVertexAttribArray(isPrimaryLoc);
   gl.vertexAttribPointer(isPrimaryLoc, 1, gl.FLOAT, false, stride, 20);
 
@@ -267,9 +275,16 @@ function clipY(cy: number): number {
 
 function writeQuad(
   offset: number,
-  left: number, top: number, right: number, bottom: number,
-  u1: number, v1: number, u2: number, v2: number,
-  alpha: number, isPrimary: number,
+  left: number,
+  top: number,
+  right: number,
+  bottom: number,
+  u1: number,
+  v1: number,
+  u2: number,
+  v2: number,
+  alpha: number,
+  isPrimary: number,
 ): number {
   const x1 = clipX(left);
   const y1 = clipY(top);
@@ -278,31 +293,49 @@ function writeQuad(
 
   // Triangle 1: top-left, top-right, bottom-left
   // Top-left
-  vertexData[offset++] = x1; vertexData[offset++] = y1;
-  vertexData[offset++] = u1; vertexData[offset++] = v1;
-  vertexData[offset++] = alpha; vertexData[offset++] = isPrimary;
+  vertexData[offset++] = x1;
+  vertexData[offset++] = y1;
+  vertexData[offset++] = u1;
+  vertexData[offset++] = v1;
+  vertexData[offset++] = alpha;
+  vertexData[offset++] = isPrimary;
   // Top-right
-  vertexData[offset++] = x2; vertexData[offset++] = y1;
-  vertexData[offset++] = u2; vertexData[offset++] = v1;
-  vertexData[offset++] = alpha; vertexData[offset++] = isPrimary;
+  vertexData[offset++] = x2;
+  vertexData[offset++] = y1;
+  vertexData[offset++] = u2;
+  vertexData[offset++] = v1;
+  vertexData[offset++] = alpha;
+  vertexData[offset++] = isPrimary;
   // Bottom-left
-  vertexData[offset++] = x1; vertexData[offset++] = y2;
-  vertexData[offset++] = u1; vertexData[offset++] = v2;
-  vertexData[offset++] = alpha; vertexData[offset++] = isPrimary;
+  vertexData[offset++] = x1;
+  vertexData[offset++] = y2;
+  vertexData[offset++] = u1;
+  vertexData[offset++] = v2;
+  vertexData[offset++] = alpha;
+  vertexData[offset++] = isPrimary;
 
   // Triangle 2: top-right, bottom-right, bottom-left
   // Top-right
-  vertexData[offset++] = x2; vertexData[offset++] = y1;
-  vertexData[offset++] = u2; vertexData[offset++] = v1;
-  vertexData[offset++] = alpha; vertexData[offset++] = isPrimary;
+  vertexData[offset++] = x2;
+  vertexData[offset++] = y1;
+  vertexData[offset++] = u2;
+  vertexData[offset++] = v1;
+  vertexData[offset++] = alpha;
+  vertexData[offset++] = isPrimary;
   // Bottom-right
-  vertexData[offset++] = x2; vertexData[offset++] = y2;
-  vertexData[offset++] = u2; vertexData[offset++] = v2;
-  vertexData[offset++] = alpha; vertexData[offset++] = isPrimary;
+  vertexData[offset++] = x2;
+  vertexData[offset++] = y2;
+  vertexData[offset++] = u2;
+  vertexData[offset++] = v2;
+  vertexData[offset++] = alpha;
+  vertexData[offset++] = isPrimary;
   // Bottom-left
-  vertexData[offset++] = x1; vertexData[offset++] = y2;
-  vertexData[offset++] = u1; vertexData[offset++] = v2;
-  vertexData[offset++] = alpha; vertexData[offset++] = isPrimary;
+  vertexData[offset++] = x1;
+  vertexData[offset++] = y2;
+  vertexData[offset++] = u1;
+  vertexData[offset++] = v2;
+  vertexData[offset++] = alpha;
+  vertexData[offset++] = isPrimary;
 
   return offset;
 }
@@ -319,7 +352,15 @@ function animate(now: number): void {
 
   for (let ci = columns.length - 1; ci >= 0; ci--) {
     const col = columns[ci]!;
-    const { charIndices, length, currentChar, charsRemaining, fontSize, xCoord, yCoord } = col;
+    const {
+      charIndices,
+      length,
+      currentChar,
+      charsRemaining,
+      fontSize,
+      xCoord,
+      yCoord,
+    } = col;
 
     const isFadingIn = charsRemaining === length;
     const fadeOutOffset = length - charsRemaining;
@@ -344,7 +385,7 @@ function animate(now: number): void {
       }
       alpha = Math.max(0, Math.min(1, alpha));
 
-      const isPrimary = (isFadingIn && i === currentChar - 1) ? 1.0 : 0.0;
+      const isPrimary = isFadingIn && i === currentChar - 1 ? 1.0 : 0.0;
 
       const baselineY = yCoord + fontSize * i;
       const spriteTop = baselineY - ATLAS_BASELINE * scale;
@@ -355,7 +396,19 @@ function animate(now: number): void {
       const v1 = 0;
       const v2 = 1;
 
-      offset = writeQuad(offset, spriteLeft, spriteTop, spriteLeft + spriteW, spriteBottom, u1, v1, u2, v2, alpha, isPrimary);
+      offset = writeQuad(
+        offset,
+        spriteLeft,
+        spriteTop,
+        spriteLeft + spriteW,
+        spriteBottom,
+        u1,
+        v1,
+        u2,
+        v2,
+        alpha,
+        isPrimary,
+      );
       quadCount++;
     }
 
@@ -431,7 +484,6 @@ self.onmessage = (e: MessageEvent) => {
       refreshAllColumns();
       startAnimation();
     });
-
   } else if (type === "resize") {
     canvasWidth = e.data.width as number;
     canvasHeight = e.data.height as number;
@@ -440,19 +492,15 @@ self.onmessage = (e: MessageEvent) => {
     gl.viewport(0, 0, canvasWidth, canvasHeight);
     totalPossibleColumns = Math.floor((canvasWidth / rootFontSize) * 1.5);
     refreshAllColumns();
-
   } else if (type === "visibilityPause") {
     pausedByVisibility = true;
     stopAnimation();
-
   } else if (type === "visibilityResume") {
     pausedByVisibility = false;
     startAnimation();
-
   } else if (type === "intersectionPause") {
     pausedByIntersection = true;
     stopAnimation();
-
   } else if (type === "intersectionResume") {
     pausedByIntersection = false;
     startAnimation();

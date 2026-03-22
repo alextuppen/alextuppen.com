@@ -1,6 +1,13 @@
 ---
 import { URL_LINKEDIN, URL_INSTAGRAM, URL_GITHUB } from "../../consts";
-import { LinkedIn, Instagram, Github, CookingPot, Pencil, Computer } from "../../svg";
+import {
+  LinkedIn,
+  Instagram,
+  Github,
+  CookingPot,
+  Pencil,
+  Computer,
+} from "../../svg";
 import Menu from "./Menu.astro";
 
 export const internalLinks = [
@@ -20,15 +27,18 @@ const isActive = (link: string) =>
   pathname === link || pathname.startsWith(link + "/");
 ---
 
-<header class="sticky top-0 z-50 bg-surface-6/95 backdrop-blur-sm border-b border-white/10">
+<header
+  class="sticky top-0 z-50 bg-surface-6/95 backdrop-blur-sm border-b border-white/10"
+>
   <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="/" class="min-w-0 inline-flex items-center gap-3 group focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2">
-      <img
-        src="/logo/white.svg"
-        alt="Alex Tuppen logo"
-        class="h-8 w-auto"
-      />
-      <span class="font-display font-medium text-xl sm:text-2xl text-white group-hover:text-primary transition-colors truncate">
+    <a
+      href="/"
+      class="min-w-0 inline-flex items-center gap-3 group focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+    >
+      <img src="/logo/white.svg" alt="Alex Tuppen logo" class="h-8 w-auto" />
+      <span
+        class="font-display font-medium text-xl sm:text-2xl text-white group-hover:text-primary transition-colors truncate"
+      >
         Alex Tuppen
       </span>
     </a>
@@ -50,7 +60,12 @@ const isActive = (link: string) =>
               >
                 {/* Invisible bold clone prevents layout shift on active */}
                 <span class="flex flex-col items-center">
-                  <span class="font-semibold invisible h-0 overflow-hidden select-none" aria-hidden="true">{item.text}</span>
+                  <span
+                    class="font-semibold invisible h-0 overflow-hidden select-none"
+                    aria-hidden="true"
+                  >
+                    {item.text}
+                  </span>
                   <span>{item.text}</span>
                 </span>
               </a>

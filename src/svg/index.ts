@@ -10,4 +10,16 @@ import LightBulb from "./LightBulb.astro";
 import LinkedIn from "./LinkedIn.astro";
 import Pencil from "./Pencil.astro";
 
-export { Clock, Computer, CookingPot, ExclamationCircle, Github, Instagram, Knife, KnifeFork, LightBulb, LinkedIn, Pencil };
+export {
+  Clock,
+  Computer,
+  CookingPot,
+  ExclamationCircle,
+  Github,
+  Instagram,
+  Knife,
+  KnifeFork,
+  LightBulb,
+  LinkedIn,
+  Pencil,
+};

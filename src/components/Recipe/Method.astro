@@ -10,8 +10,12 @@ const { recipeInstructions } = Astro.props;
 ---
 
 <div class="flex-1 px-4 lg:px-0 lg:pt-6">
-  <h2 class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-6">Method</h2>
-  <ol class="flex flex-col gap-8 list-none p-0 text-left counter-reset-[method]">
+  <h2 class="text-xs font-semibold text-white/50 uppercase tracking-wider mb-6">
+    Method
+  </h2>
+  <ol
+    class="flex flex-col gap-8 list-none p-0 text-left counter-reset-[method]"
+  >
     {
       recipeInstructions.map((instruction, idx) => (
         <li class="flex flex-col gap-3">
@@ -20,7 +24,9 @@ const { recipeInstructions } = Astro.props;
             {instruction.name}
           </h4>
           {instruction.text != null && (
-            <p class="text-white/80 text-sm leading-relaxed">{instruction.text}</p>
+            <p class="text-white/80 text-sm leading-relaxed">
+              {instruction.text}
+            </p>
           )}
           {instruction.itemListElement != null &&
             instruction.itemListElement.map((element) => {

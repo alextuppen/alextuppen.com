@@ -7,10 +7,17 @@ interface Props {
   external?: boolean;
 }
 
-const { id, className, variant = "primary", href, external = false, ...rest } =
-  Astro.props;
+const {
+  id,
+  className,
+  variant = "primary",
+  href,
+  external = false,
+  ...rest
+} = Astro.props;
 
-const base = "inline-flex items-center justify-center cursor-pointer select-none transition-all duration-200 active:translate-y-0.5 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2";
+const base =
+  "inline-flex items-center justify-center cursor-pointer select-none transition-all duration-200 active:translate-y-0.5 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2";
 
 const variants: Record<string, string> = {
   primary:
@@ -18,8 +25,7 @@ const variants: Record<string, string> = {
   secondary:
     "px-6 py-2.5 border border-primary text-white font-semibold tracking-wide rounded-lg hover:bg-primary/10 hover:border-primary-dark active:bg-primary/20",
   icon: "w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 lg:w-[3.4rem] lg:h-[3.4rem]",
-  largeIcon:
-    "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20",
+  largeIcon: "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20",
 };
 ---
 

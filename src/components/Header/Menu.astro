@@ -11,9 +11,18 @@ const isActive = (link: string) =>
   aria-label="Toggle navigation menu"
   class="relative w-8 h-8 flex flex-col justify-center items-center gap-1.5 p-1 rounded focus-visible:outline-2 focus-visible:outline-primary"
 >
-  <span id="menuBurgerBar1" class="block w-6 h-[3px] bg-white origin-center transition-all duration-300"></span>
-  <span id="menuBurgerBar2" class="block w-6 h-[3px] bg-primary origin-center transition-all duration-300"></span>
-  <span id="menuBurgerBar3" class="block w-6 h-[3px] bg-white origin-center transition-all duration-300"></span>
+  <span
+    id="menuBurgerBar1"
+    class="block w-6 h-[3px] bg-white origin-center transition-all duration-300"
+  ></span>
+  <span
+    id="menuBurgerBar2"
+    class="block w-6 h-[3px] bg-primary origin-center transition-all duration-300"
+  ></span>
+  <span
+    id="menuBurgerBar3"
+    class="block w-6 h-[3px] bg-white origin-center transition-all duration-300"
+  ></span>
 </button>
 <div
   id="menu"
@@ -92,7 +101,11 @@ const isActive = (link: string) =>
     button.addEventListener("click", () => setOpen(!open));
 
     document.addEventListener("click", (e) => {
-      if (open && !button.contains(e.target as Node) && !menu.contains(e.target as Node)) {
+      if (
+        open &&
+        !button.contains(e.target as Node) &&
+        !menu.contains(e.target as Node)
+      ) {
         setOpen(false);
       }
     });

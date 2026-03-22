@@ -26,7 +26,11 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageText } =
       )
     }
     <div class="text-center mb-8">
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display font-medium mb-4">{title}</h1>
+      <h1
+        class="text-3xl sm:text-4xl lg:text-5xl font-display font-medium mb-4"
+      >
+        {title}
+      </h1>
       <div class="text-white/60 text-sm space-y-1">
         <FormattedDate date={pubDate} />
         {
