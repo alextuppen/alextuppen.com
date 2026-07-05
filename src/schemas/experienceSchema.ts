@@ -1,4 +1,4 @@
-import { z } from "astro:content";
+import { z } from "astro/zod";
 import { educationSchema } from "./educationSchema";
 
 export const technologySchema = z.union([

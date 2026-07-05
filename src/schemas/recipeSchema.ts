@@ -1,4 +1,4 @@
-import { z } from "astro:content";
+import { z } from "astro/zod";
 
 export const recipeSchema = z.object({
   "@context": z.literal("https://schema.org/"),

@@ -1,29 +1,35 @@
-import eslint from "@eslint/js";
+// @ts-check
+
+import js from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 import astro from "eslint-plugin-astro";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import prettier from "eslint-config-prettier";
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  tseslint.configs.recommended,
-  ...astro.configs["flat/recommended"],
-  jsxA11y.flatConfigs.recommended,
-  prettier,
+export default defineConfig([
+  {
+    files: ["**/*.{js,ts,mjs,cjs,astro}"],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      ...astro.configs["flat/recommended"],
+      jsxA11y.flatConfigs.recommended,
+      prettier,
+    ],
+  },
   {
     rules: {
       eqeqeq: ["error", "always", { null: "ignore" }],
     },
   },
   {
-    // astro.config.mjs and other Node.js config files need process global
     files: ["*.mjs", "*.cjs"],
     languageOptions: {
       globals: { process: "readonly" },
     },
   },
   {
-    // env.d.ts uses triple-slash references — this is Astro's recommended pattern
     files: ["src/env.d.ts"],
     rules: {
       "@typescript-eslint/triple-slash-reference": "off",
@@ -32,4 +38,4 @@ export default tseslint.config(
   {
     ignores: ["dist/", ".astro/"],
   },
-);
+]);
