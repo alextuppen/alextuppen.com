@@ -11,7 +11,11 @@ const blog = defineCollection({
   loader: glob({
     pattern: "**/*.{md,mdx}",
     base: "./src/content/blog",
-    generateId: ({ entry }) => entry.replace(/\.(md|mdx)$/, ""),
+    generateId: ({ entry }) =>
+      entry
+        .split("/")
+        .pop()!
+        .replace(/\.(md|mdx)$/, ""),
   }),
   schema: blogSchema,
 });
