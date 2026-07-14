@@ -4,7 +4,7 @@ Personal website for Alex Tuppen. Hosted on Cloudflare Pages.
 
 ## Stack
 
-- **Framework**: Astro 6 (static, no SSR)
+- **Framework**: Astro 7 (static, no SSR)
 - **Package manager**: pnpm
 - **Styling**: Tailwind CSS v4 + `@tailwindcss/typography`
 - **Content**: Astro content collections (Zod schemas), new loader API (`src/content.config.ts`)
@@ -38,6 +38,5 @@ Personal website for Alex Tuppen. Hosted on Cloudflare Pages.
 
 ## Notes
 
-- `pnpm.overrides` pins `@astrojs/internal-helpers` to `^0.8.0` — needed to resolve a peer conflict between `astro@6` and `astro-d2`
 - Content collection IDs no longer include file extensions (stripped via `generateId` in loaders)
 - `@tailwindcss/vite` plugin used directly — not `@astrojs/tailwind` (which only supports Tailwind v3)
