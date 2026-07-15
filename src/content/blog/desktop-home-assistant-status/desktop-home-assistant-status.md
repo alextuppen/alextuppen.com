@@ -98,6 +98,14 @@ The final piece is the backing, it has screw holes and cut outs to allow for air
 
 ![Screenshot of the backing](./HA-status-backing.png)
 
+### Printing and assembly
+
+The 3D models only just fit on the bed of my Ender 3 S1 Pro so I had to stand them on their side and run them diagonally across the bed. The fascia and the chassis have both printed reasonably well because they have enough thickness to be able to stand on their edge. The backing, however, is so thin that it has warped during printing. Fortunately it's good enough — I can't see it — and now I have an excuse to buy a better 3D printer.
+
+Next I soldered the wires onto the OLED display and the SCD40. I chose solid core wire to help hold the SCD40 in place during assembly. This made assembly much easier because, unlike the OLED display and carrier board which are both screwed down, the SCD40 only sits in a slot in the backing — the solid core wire's own rigidity was enough to hold it up in place while I slotted it into the backing. Finally I installed the heat inserts in the chassis and fascia and screwed everything together.
+
+<photo of electrical components wired up and attached to chassis without backing>
+
 ## YAML Configuration
 
 This is an excellent point to talk about the inspiration for this project, the first blog I read was this post about building an [E-Paper Home Assistant dashboard](https://smarthomescene.com/diy/e-paper-dashboards-with-waveshare-and-esphome/).
@@ -275,3 +283,15 @@ for (int i = 0; i < 7; i++) {
 ```
 
 Nudging the whole layout up, down, or further apart is then a one line change to `row_height` or `start_y`, rather than re-calculating seven sets of coordinates by hand.
+
+## What's next
+
+I will continue tweaking the e-paper display's layout to add more information to it as I add more sensors to my flat and think of other things I want to know about.
+
+Physically I expect the display to remain largely untouched for a while, but at some point I would be interested in having a record of the air quality inside my flat beyond just CO2 concentration. To achieve this I am considering adding an SEN55 sensor, the SEN55 can measure PM1.0, PM2.5, PM4.0, PM10, VOC, NOx, temperature and humidity, combined with the SCD40's CO2, temperature and humidity this would greatly expand the information I can view on my status display. However the SEN55 is physically quite large and it has small fan so it would require an extensive redesign of the chassis and backing plate. I have been playing about with Claude and the Autodesk Fusion MCP server, so hopefully this will be much easier than the initial design.
+
+## Conclusion
+
+I am extremely happy with how this project has turned out. The printed parts only needed some sanding to fit together, the electronics all worked first time, and the display has been mounted on my desk and working for a couple of weeks now. Along the way I have learnt a lot about 3D modelling, how e-paper displays work, Home Assistant and ESPHome. More importantly, I have only scratched the surface of what all of these technologies can do and there is a lot still for me to learn.
+
+All that is really left is for the current heat waves to finish and then the weather forecast will really start to earn its keep.
