@@ -1,9 +1,9 @@
 ---
 title: "Building a Home Assistant status display"
-description: "Documenting how I built a Home Assistant status display for my desktop to show the weather forecast and details of my flat."
+description: "Documenting how I built a Home Assistant e-paper & OLED status display for my desktop to show the weather forecast and details of my flat."
 pubDate: "2026/07/01"
-heroImage: "/blog/depressing-meeting.webp"
-heroImageText: "An image generated using DeepAI with the prompt: a cartoon drawing of a software developer in a depressing meeting with faceless coworkers"
+heroImage: "/blog/HA-status-wiring-cropped.jpg"
+heroImageText: "Photograph of the internal electronic components and wiring of my Home Assistant status display"
 ---
 
 I like going for walks, they break my day up, they get me out of my chair and they let me spend some time looking at trees, which are much nicer than walls and monitors.
@@ -47,9 +47,10 @@ But as any home owner knows leaks can be very damaging very quickly, so I wanted
 
 This is where the red colour of the e-paper display comes in, when an alert is triggered the display shows an alert instead:
 
-<photo of e-paper alert state>
+![Photograph of the display showing a kitchen leak detected](./HA-status-leak.jpg)
 
-But sometimes you want to be notified about something in real time, and the e-paper display isn't suitable because it has a finite number of refreshes and each refresh takes about fifteen seconds.
+The observant among you will by now have noticed that there are two displays, the e-paper display I have spoken about already and another smaller display.
+This is because an e-paper display is not suited to displaying real time events. It has a finite number of refreshes, and each refresh takes about fifteen seconds.
 
 ### I2C display
 
@@ -57,10 +58,6 @@ Unfortunately the SPI bus is entirely occupied by the e-paper on this driver boa
 But the I2C bus is completely free, and if you just want to be able to display short notification messages then its low bandwidth is not an issue.
 
 ![Photograph of a Hailege 2.42" SSD1309 128x64 OLED Display](./Hailege-2.42-SSD1309-128x64-OLED-Display.jpg)
-
-So when someone knocks at your door, you have a second real time display that can show a simple message like "Front door knocked".
-
-<photo of OLED display with front door knocked message>
 
 So I went looking for the nicest I2C display I could find and Amazon stocks the Hailege 2.42" SSD1309 128x64 OLED display.
 The bright clear image is easy to read and the display is large enough to show three lines of text.
@@ -74,7 +71,7 @@ I knew that CO2 concentration in the air affects your ability to mentally concen
 
 And to notify me when the CO2 levels are too high, we can use the OLED display.
 
-<photo of open window notification>
+![Photograph of the OLED display with the notification text "CO2 585 ppm Open window!"](./HA-status-CO2.jpg)
 
 ## 3D printed case
 
@@ -104,7 +101,7 @@ The 3D models only just fit on the bed of my Ender 3 S1 Pro so I had to stand th
 
 Next I soldered the wires onto the OLED display and the SCD40. I chose solid core wire to help hold the SCD40 in place during assembly. This made assembly much easier because, unlike the OLED display and carrier board which are both screwed down, the SCD40 only sits in a slot in the backing — the solid core wire's own rigidity was enough to hold it up in place while I slotted it into the backing. Finally I installed the heat inserts in the chassis and fascia and screwed everything together.
 
-<photo of electrical components wired up and attached to chassis without backing>
+![Photograph of the installed and wired up components](./HA-status-wiring.jpg)
 
 ## YAML Configuration
 
@@ -233,7 +230,7 @@ time:
 
 The `computer_on` sensor reads the current draw of the smart plug my computer is plugged into. Alerts skip this throttling entirely, since a leak shouldn't have to wait fifteen minutes to show up.
 
-The OLED display will also burn out from prolonged use, but it is only refreshed when an event takes place so it is less of an issue.
+The OLED display will also burn out from prolonged use, but this is combatted in two ways: first, it only displays an alert when something happens, which is infrequent; and second, it only shows alerts for one minute in every five.
 
 ### Waiting for sensors on boot
 
@@ -288,9 +285,11 @@ Nudging the whole layout up, down, or further apart is then a one line change to
 
 I will continue tweaking the e-paper display's layout to add more information to it as I add more sensors to my flat and think of other things I want to know about.
 
-Physically I expect the display to remain largely untouched for a while, but at some point I would be interested in having a record of the air quality inside my flat beyond just CO2 concentration. To achieve this I am considering adding an SEN55 sensor, the SEN55 can measure PM1.0, PM2.5, PM4.0, PM10, VOC, NOx, temperature and humidity, combined with the SCD40's CO2, temperature and humidity this would greatly expand the information I can view on my status display. However the SEN55 is physically quite large and it has small fan so it would require an extensive redesign of the chassis and backing plate. I have been playing about with Claude and the Autodesk Fusion MCP server, so hopefully this will be much easier than the initial design.
+Physically I expect the display to remain largely untouched for a while, but at some point I would be interested in having a record of the air quality inside my flat beyond just CO2 concentration. To achieve this I am considering adding an SEN55 sensor. The SEN55 can measure PM1.0, PM2.5, PM4.0, PM10, VOC, NOx, temperature and humidity — combined with the SCD40's CO2, temperature and humidity readings, this would greatly expand the information I can view on my status display. However, the SEN55 is physically quite large and it has a small fan so it would require an extensive redesign of the chassis and backing plate. I have been playing about with Claude and the Autodesk Fusion MCP server, so hopefully this will be much easier than the initial design.
 
 ## Conclusion
+
+![The finished Home Assistant status display](./HA-status.jpg)
 
 I am extremely happy with how this project has turned out. The printed parts only needed some sanding to fit together, the electronics all worked first time, and the display has been mounted on my desk and working for a couple of weeks now. Along the way I have learnt a lot about 3D modelling, how e-paper displays work, Home Assistant and ESPHome. More importantly, I have only scratched the surface of what all of these technologies can do and there is a lot still for me to learn.
 
