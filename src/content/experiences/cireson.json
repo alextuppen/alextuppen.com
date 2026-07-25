@@ -1,5 +1,5 @@
 {
-  "image": "/experience/cireson.jpg",
+  "image": "./cireson.jpg",
   "details": {
     "title": "Support Engineer",
     "organisation": "Cireson",

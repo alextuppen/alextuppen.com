@@ -4,6 +4,7 @@ import { BlogRecipeItem, Button, Hero } from "../components";
 
 import { SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import { formatShortDate } from "../components/FormattedDate.astro";
 
 const recipes = await getCollection("recipes");
@@ -17,7 +18,10 @@ if (recipe == null) {
   transformedRecipe = {
     href: `/recipes/${recipe.id}`,
     title: recipe.data.name,
-    src: recipe.data.image ? recipe.data.image[0] : undefined,
+    src: recipe.data.image?.[0]
+      ? (await getImage({ src: recipe.data.image[0], width: 300, height: 300 }))
+          .src
+      : undefined,
     alt: recipe.data.name,
     description: recipe.data.description,
   };
@@ -45,7 +49,15 @@ if (blogPost == null) {
   transformedBlogPost = {
     href: `/blog/${blogPost.id}`,
     title: blogPost.data.title,
-    src: blogPost.data.heroImage,
+    src: blogPost.data.heroImage
+      ? (
+          await getImage({
+            src: blogPost.data.heroImage,
+            width: 300,
+            height: 300,
+          })
+        ).src
+      : undefined,
     alt: blogPost.data.heroImageText,
     description: blogPost.data.description,
   };
@@ -77,7 +89,15 @@ if (latestExperience != null) {
   transformedExperience = {
     href: "/experience",
     title: details.title,
-    src: latestExperience.image,
+    src: latestExperience.image
+      ? (
+          await getImage({
+            src: latestExperience.image,
+            width: 300,
+            height: 300,
+          })
+        ).src
+      : undefined,
     alt: details.organisation,
     subtitle: details.organisation,
     description: `${dateRange} · ${details.location}`,

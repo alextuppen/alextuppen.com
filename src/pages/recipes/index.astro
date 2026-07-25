@@ -3,6 +3,7 @@ import { Root } from "../../layouts";
 import { BlogRecipeList, SearchInput } from "../../components";
 import { SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 
 const recipes = await getCollection("recipes");
 const sortedRecipes = recipes.sort((a, b) =>
@@ -11,16 +12,23 @@ const sortedRecipes = recipes.sort((a, b) =>
 const favouriteCount = sortedRecipes.filter(
   (r) => r.data.favourite === true,
 ).length;
-const allRecipes = sortedRecipes.map(
-  ({ id, data: { name, description, image, keywords, favourite } }) => ({
-    href: `/recipes/${id}`,
-    title: name,
-    src: image ? image[0] : undefined,
-    alt: name,
-    description,
-    keywords: keywords.split(", "),
-    isFeatured: favourite === true,
-  }),
+const allRecipes = await Promise.all(
+  sortedRecipes.map(
+    async ({
+      id,
+      data: { name, description, image, keywords, favourite },
+    }) => ({
+      href: `/recipes/${id}`,
+      title: name,
+      src: image?.[0]
+        ? (await getImage({ src: image[0], width: 300, height: 300 })).src
+        : undefined,
+      alt: name,
+      description,
+      keywords: keywords.split(", "),
+      isFeatured: favourite === true,
+    }),
+  ),
 );
 const transformedRecipes = [
   ...allRecipes.filter((r) => r.isFeatured),

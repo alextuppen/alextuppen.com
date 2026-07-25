@@ -1,5 +1,5 @@
 {
-  "image": "/experience/headbox.jpeg",
+  "image": "./headbox.jpeg",
   "details": {
     "title": "Senior full stack engineer",
     "organisation": "HeadBox",

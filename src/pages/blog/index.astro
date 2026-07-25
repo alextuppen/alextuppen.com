@@ -2,24 +2,29 @@
 import { Root } from "../../layouts";
 import { SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import { BlogRecipeList, SearchInput } from "../../components";
 const posts = await getCollection("blog");
 const sortedPosts = posts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-const transformedPosts = sortedPosts.map(
-  (
-    { id, data: { heroImage, heroImageText, title, description, pubDate } },
-    index,
-  ) => ({
-    href: `/blog/${id}`,
-    title,
-    src: heroImage,
-    alt: heroImageText,
-    date: pubDate,
-    description,
-    isFeatured: index === 0,
-  }),
+const transformedPosts = await Promise.all(
+  sortedPosts.map(
+    async (
+      { id, data: { heroImage, heroImageText, title, description, pubDate } },
+      index,
+    ) => ({
+      href: `/blog/${id}`,
+      title,
+      src: heroImage
+        ? (await getImage({ src: heroImage, width: 300, height: 300 })).src
+        : undefined,
+      alt: heroImageText,
+      date: pubDate,
+      description,
+      isFeatured: index === 0,
+    }),
+  ),
 );
 ---
 

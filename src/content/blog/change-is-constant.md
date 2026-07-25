@@ -2,7 +2,7 @@
 title: "No organisation ever knows what it wants, but it always knows when it wants it by"
 description: "Looking at why the expectations of software teams is constantly changing yet deadlines remain fixed and how to cope."
 pubDate: "2025/03/12"
-heroImage: "/blog/depressing-meeting.webp"
+heroImage: "./depressing-meeting.webp"
 heroImageText: "An image generated using DeepAI with the prompt: a cartoon drawing of a software developer in a depressing meeting with faceless coworkers"
 ---
 

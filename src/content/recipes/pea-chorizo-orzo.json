@@ -3,7 +3,7 @@
   "@type": "Recipe",
   "name": "Pea and chorizo orzo",
   "favourite": true,
-  "image": ["/recipes/pea-chorizo-orzo.jpg"],
+  "image": ["./pea-chorizo-orzo.jpg"],
   "author": {
     "@type": "Person",
     "name": "Alex Tuppen"

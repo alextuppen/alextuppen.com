@@ -1,4 +1,5 @@
 import { z } from "astro/zod";
+import type { SchemaContext } from "astro:content";
 import { educationSchema } from "./educationSchema";
 
 export const technologySchema = z.union([
@@ -39,10 +40,11 @@ export const technologyAlternativeSchema = z.object({
   alt: z.string(),
 });
 
-export const jobSchema = educationSchema.extend({
-  image: z.string().optional(),
-  technologies: z
-    .array(z.union([technologySchema, technologyAlternativeSchema]))
-    .optional(),
-  description: z.string().array(),
-});
+export const jobSchema = ({ image }: SchemaContext) =>
+  educationSchema.extend({
+    image: image().optional(),
+    technologies: z
+      .array(z.union([technologySchema, technologyAlternativeSchema]))
+      .optional(),
+    description: z.string().array(),
+  });

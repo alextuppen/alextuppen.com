@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
 import Root from "../layouts/Root.astro";
 import { FormattedDate } from "../components";
 
@@ -14,11 +15,9 @@ const { title, description, pubDate, updatedDate, heroImage, heroImageText } =
     {
       heroImage && (
         <div class="flex justify-center mb-8">
-          <img
-            width="300"
-            height="300"
+          <Image
             src={heroImage}
-            alt={heroImageText}
+            alt={heroImageText ?? ""}
             title={heroImageText}
             class="w-4/5 sm:w-1/2 rounded-2xl shadow-xl shadow-black/40"
           />

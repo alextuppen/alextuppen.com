@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
 import ExpEduDetails from "./ExpEduDetails.astro";
 import { Technologies } from "./Technologies";
 
@@ -21,7 +22,7 @@ const {
     {
       image && (
         <div class="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-lg shrink-0 m-4 flex items-center justify-center overflow-hidden">
-          <img
+          <Image
             src={image}
             alt={details.organisation}
             class="w-full h-full object-contain"

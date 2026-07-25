@@ -1,5 +1,5 @@
 {
-  "image": "/experience/poweron.png",
+  "image": "./poweron.png",
   "details": {
     "title": "Developer",
     "organisation": "PowerON Platforms",

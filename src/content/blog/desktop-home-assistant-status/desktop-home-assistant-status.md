@@ -2,7 +2,7 @@
 title: "Building a Home Assistant status display"
 description: "Documenting how I built a Home Assistant e-paper & OLED status display for my desktop to show the weather forecast and details of my flat."
 pubDate: "2026/07/01"
-heroImage: "/blog/HA-status-wiring-cropped.jpg"
+heroImage: "./HA-status-wiring-cropped.jpg"
 heroImageText: "Photograph of the internal electronic components and wiring of my Home Assistant status display"
 ---
 

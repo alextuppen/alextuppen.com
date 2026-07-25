@@ -2,7 +2,7 @@
 title: "Your code should be lazy"
 description: "Advocating for the benefits of the return early and separation of concerns patterns through the analogy of code being lazy and not wanting to do any more work than absolutely necessary."
 pubDate: "2025/03/11"
-heroImage: "/blog/lazy-computer.webp"
+heroImage: "./lazy-computer.webp"
 heroImageText: "An image generated using DeepAI with the prompt: a cartoon drawing of a very lazy computer that doesn't want to do any work"
 ---
 

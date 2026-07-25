@@ -2,7 +2,7 @@
 title: "React directory structure"
 description: "Discussing how a React component's logical structure can be reflected in its file structure to improve developer experience."
 pubDate: "2023/01/23"
-heroImage: "/blog/fraught_stickman_overwhelmed_by_multiple_giant_piles_of_paper.webp"
+heroImage: "./fraught_stickman_overwhelmed_by_multiple_giant_piles_of_paper.webp"
 heroImageText: "An image generated using DALL.E with the prompt: fraught stickman overwhelmed by multiple giant piles of paper"
 ---
 

@@ -1,5 +1,5 @@
 {
-  "image": "/experience/phin.jpg",
+  "image": "./phin.jpg",
   "details": {
     "title": "Senior full stack engineer",
     "organisation": "Private Healthcare Information Network (PHIN)",
