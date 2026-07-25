@@ -193,12 +193,11 @@ if (id(alert_active)) {
 }
 ```
 
-Whereas the OLED just displays a small amount of text for as long as the alert is active:
+Whereas the OLED just flashes a small amount of text while the alert is active::
 
 ```cpp
-if (id(ensuite_leak_sensor).has_state() && id(ensuite_leak_sensor).state) {
-  it.printf(64, 10, id(font_oled), TextAlign::TOP_CENTER, "ENSUITE LEAK");
-  it.printf(64, 38, id(font_oled), TextAlign::TOP_CENTER, "DETECTED");
+if (ensuite_leak) {
+  show_alert({"ENSUITE", "LEAK", "DETECTED"});
   return;
 }
 ```
@@ -271,7 +270,7 @@ const int start_y = ${start_y};
 for (int i = 0; i < 7; i++) {
   int y_base = start_y + (i * row_height);
 
-  it.printf(70, y_base, id(font_medium), color_black, TextAlign::TOP_CENTER,
+  it.printf(90, y_base, id(font_medium), color_black, TextAlign::TOP_CENTER,
             "%02d:00", hour_times[i].hour);
 
   // ...weather icon, precipitation and temperature for this row follow,
@@ -280,6 +279,63 @@ for (int i = 0; i < 7; i++) {
 ```
 
 Nudging the whole layout up, down, or further apart is then a one line change to `row_height` or `start_y`, rather than re-calculating seven sets of coordinates by hand.
+
+### Measuring before drawing
+
+As I added more to both displays I kept running into the same problem: a fixed pixel position or font size looks right for one string and wrong for the next.
+"ENSUITE" is shorter than "DETECTED", "100%" is a different width to "42%", and a room with three sensors takes up more space than one with just a temperature reading.
+Hardcoding coordinates for each case doesn't scale, so I turned to Claude to help find a better solution.
+
+My first attempt was to have Claude examine the font files and calculate exactly how large the various possible strings could be (e.g. 100% takes up more space than 10%) and then everything was hardcoded based on this.
+This did work well and allowed the precise measurement and allocation of margins around the dividing lines and the text.
+However, it did not work for the icons because their actual rendered size and their declared box size were frequently different, which in turn meant that lining up an icon, like the thermometer, with its value (25 degrees) as accurately as text was impossible.
+
+The second approach is what is detailed below and what is in use.
+Rather than measure beforehand and then hardcode positions to pixel-perfect coordinates, everything is measured at render time.
+This calculates how much space it needs. Once this is known, the font size and positioning can be determined.
+The massive advantage of this system is that when I need to add more information to the display, it is very easy.
+The disadvantage is that the code is now far more complex, but that is fine because Claude reads it more than I do anyway.
+
+On the OLED, this means picking the biggest font that will actually fit.
+`get_text_bounds()` only ever returns a font's fixed declared box, not a specific string's real rendered ink, so each alert message walks its own font's glyphs directly to find the true ink height, then tries the largest of five font sizes downward until one fits both the panel's width and height:
+
+```cpp
+std::vector<font::Font *> font_oled_candidates = {
+  id(font_oled_22), id(font_oled_20), id(font_oled_18), id(font_oled_16), id(font_oled_14)
+};
+
+LineLayout best = measure(font_oled_candidates.back(), lines);
+for (auto *font : font_oled_candidates) {
+  LineLayout candidate = measure(font, lines);
+  if (candidate.max_width <= oled_width - 2 * oled_margin_x && candidate.ink_height <= oled_height) {
+    best = candidate;
+    break;
+  }
+}
+```
+
+The same real-ink measurement is also used to line up icons against their values, so a temperature reading looks vertically centered against its thermometer icon rather than just centered against the font's declared box.
+
+The same measure-first idea was applied to a different problem on the e-paper display's room sensors: a room can have a lot of different metrics — the study has three whereas the hallway only has one.
+In the future a room might have a lot more than three as well. I did not, however, want to redesign the layout of the entire display if a new sensor metric was added.
+
+Each room's metrics are measured first, packed onto as many lines as they need to avoid overflowing into the divider, and then drawn, centered:
+
+```cpp
+for (const auto &metric : room.metrics) {
+  if (!metric.sensor->has_state()) continue;
+
+  int chip_width = icon_w + metric_icon_gap + value_w;
+  if (!lines.back().empty() && running_width + metric_chip_gap + chip_width > room_metrics_width) {
+    lines.emplace_back();
+    running_width = 0;
+  }
+  running_width += (lines.back().empty() ? 0 : metric_chip_gap) + chip_width;
+  lines.back().push_back(/* ... */);
+}
+```
+
+This approach is not something I could have come up with on my own. I have never worked in C++ before, and the ESP32 takes too long to flash for me to be able to create something this complex through just trial and error.
 
 ## What's next
 
