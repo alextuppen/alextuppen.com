@@ -23,8 +23,9 @@ export const externalLinks = [
 ];
 
 const pathname = Astro.url.pathname;
-const isActive = (link: string) =>
-  pathname === link || pathname.startsWith(link + "/");
+const isCurrentPage = (link: string) =>
+  pathname === link || pathname === link + "/";
+const isInSection = (link: string) => pathname.startsWith(link + "/");
 ---
 
 <header
@@ -48,14 +49,18 @@ const isActive = (link: string) =>
       <div class="flex items-center gap-1">
         {
           internalLinks.map((item) => {
-            const active = isActive(item.link);
+            const current = isCurrentPage(item.link);
+            const highlighted = current || isInSection(item.link);
             return (
               <a
                 href={item.link}
+                aria-current={current ? "page" : undefined}
                 class={`px-3 py-1.5 rounded text-sm transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 ${
-                  active
+                  current
                     ? "text-primary font-semibold cursor-default pointer-events-none"
-                    : "font-medium text-white/60 hover:text-white hover:bg-white/5"
+                    : highlighted
+                      ? "text-primary font-semibold hover:text-primary/80 hover:bg-white/5"
+                      : "font-medium text-white/60 hover:text-white hover:bg-white/5"
                 }`}
               >
                 {/* Invisible bold clone prevents layout shift on active */}

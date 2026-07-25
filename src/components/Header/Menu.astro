@@ -2,8 +2,9 @@
 import { internalLinks, externalLinks } from "./Header.astro";
 
 const pathname = Astro.url.pathname;
-const isActive = (link: string) =>
-  pathname === link || pathname.startsWith(link + "/");
+const isCurrentPage = (link: string) =>
+  pathname === link || pathname === link + "/";
+const isInSection = (link: string) => pathname.startsWith(link + "/");
 ---
 
 <button
@@ -32,14 +33,18 @@ const isActive = (link: string) =>
   {
     internalLinks.map((item) => {
       const Icon = item.Icon;
-      const active = isActive(item.link);
+      const current = isCurrentPage(item.link);
+      const highlighted = current || isInSection(item.link);
       return (
         <a
           href={item.link}
+          aria-current={current ? "page" : undefined}
           class={`px-4 py-3 text-sm w-full flex items-center gap-2.5 active:bg-white/10 ${
-            active
+            current
               ? "text-primary font-semibold pointer-events-none"
-              : "text-white/80 hover:text-white hover:bg-white/5"
+              : highlighted
+                ? "text-primary font-semibold hover:text-white hover:bg-white/5"
+                : "text-white/80 hover:text-white hover:bg-white/5"
           }`}
         >
           <Icon className="w-4 h-4 shrink-0" />

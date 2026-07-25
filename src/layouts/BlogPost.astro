@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import Root from "../layouts/Root.astro";
 import { FormattedDate } from "../components";
 
@@ -8,9 +8,16 @@ type Props = CollectionEntry<"blog">["data"];
 
 const { title, description, pubDate, updatedDate, heroImage, heroImageText } =
   Astro.props;
+
+const ogImage = heroImage
+  ? new URL(
+      (await getImage({ src: heroImage, width: 1200, format: "jpeg" })).src,
+      Astro.site,
+    ).toString()
+  : undefined;
 ---
 
-<Root title={title} description={description}>
+<Root title={title} description={description} image={ogImage}>
   <article class="w-full max-w-6xl mx-auto px-4 py-10">
     {
       heroImage && (

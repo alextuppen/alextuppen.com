@@ -2,7 +2,7 @@
 interface Props {
   title: string;
   description: string;
-  image?: string;
+  image?: string | undefined;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -25,6 +25,7 @@ const { title, description, image = "/logo/white.svg" } = Astro.props;
   href="/logo/white.svg"
   media="(prefers-color-scheme: dark)"
 />
+<link rel="icon" href="/favicon.ico" sizes="any" />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Fonts -->

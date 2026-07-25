@@ -1,12 +1,13 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import { Root } from "../layouts";
 import { Method, TimesServes, ToolsIngredients } from "../components";
 import { ExclamationCircle } from "../svg";
 
 type Props = CollectionEntry<"recipes">["data"];
 
+const recipeData = Astro.props;
 const {
   name,
   image,
@@ -19,10 +20,32 @@ const {
   recipeIngredient,
   tool,
   recipeInstructions,
-} = Astro.props;
+} = recipeData;
+
+const absoluteImages = image
+  ? await Promise.all(
+      image.map(async (img) =>
+        new URL(
+          (await getImage({ src: img, width: 1200, format: "jpeg" })).src,
+          Astro.site,
+        ).toString(),
+      ),
+    )
+  : undefined;
+
+const jsonLd = {
+  ...recipeData,
+  image: absoluteImages,
+  recipeYield: String(recipeYield),
+};
 ---
 
-<Root title={name} description={description}>
+<Root title={name} description={description} image={absoluteImages?.[0]}>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(jsonLd)}
+  />
   <article class="w-full max-w-4xl mx-auto px-4 py-10 flex flex-col gap-6">
     {
       image != null && image[0] != null && (
