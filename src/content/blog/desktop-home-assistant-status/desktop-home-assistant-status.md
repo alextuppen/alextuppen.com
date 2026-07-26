@@ -1,7 +1,7 @@
 ---
 title: "Building a Home Assistant status display"
 description: "Documenting how I built a Home Assistant e-paper & OLED status display for my desktop to show the weather forecast and details of my flat."
-pubDate: "2026/07/01"
+pubDate: "2026/07/25"
 heroImage: "./HA-status-wiring-cropped.jpg"
 heroImageText: "Photograph of the internal electronic components and wiring of my Home Assistant status display"
 ---
@@ -350,3 +350,15 @@ Physically I expect the display to remain largely untouched for a while, but at 
 I am extremely happy with how this project has turned out. The printed parts only needed some sanding to fit together, the electronics all worked first time, and the display has been mounted on my desk and working for a couple of weeks now. Along the way I have learnt a lot about 3D modelling, how e-paper displays work, Home Assistant and ESPHome. More importantly, I have only scratched the surface of what all of these technologies can do and there is a lot still for me to learn.
 
 All that is really left is for the current heat waves to finish and then the weather forecast will really start to earn its keep.
+
+## Addendum
+
+One of the other alert states I created for this display is used to tell me when Home Assistant's automated nightly backup fails.
+
+![The home assistant status display showing the failed backup alert](./HA-status-backup.jpg)
+
+The constant tweaking and flashing of the display's ESP32 board had caused ESPHome to create a massive cache file that was taking up way too much space.
+As a result there was not enough disk space on the server to create the backup.
+This happened the day after I published this article. Fortunately, when I got to my desk in the morning, the display was bright red with a massive warning on it.
+
+While I wasn't expecting the display to be that useful quite that fast, it was very satisfying seeing it work so effectively.
