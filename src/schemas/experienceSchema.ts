@@ -32,6 +32,9 @@ export const technologySchema = z.union([
   z.literal("npm"),
   z.literal("prettier"),
   z.literal("yarn"),
+  z.literal("gcp"),
+  z.literal("claudeCode"),
+  z.literal("hex"),
 ]);
 
 export const technologyAlternativeSchema = z.object({

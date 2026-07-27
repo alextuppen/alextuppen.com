@@ -10,16 +10,16 @@
   "technologies": [
     "aws",
     "heroku",
+    "javascript",
+    "html",
+    "css",
     "node",
     "postgresql",
     "graphql",
-    "git",
-    "npm",
     "apollo",
     "react",
-    "javascript",
-    "html",
-    "css"
+    "git",
+    "npm"
   ],
   "description": [
     "Unpaid learning sabbatical, the goal was to learn how to architect and build a full-stack software as ",

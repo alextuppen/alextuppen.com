@@ -121,6 +121,16 @@ export const technologyDictionary: TechnologyDictionary = {
     title: "Heroku",
     alt: "Heroku logo",
   },
+  gcp: {
+    src: "/icons/platforms/gcp.svg",
+    title: "Google Cloud Platform",
+    alt: "Google Cloud Platform logo",
+  },
+  hex: {
+    src: "/icons/platforms/hex.svg",
+    title: "Hex",
+    alt: "Hex logo",
+  },
   eslint: {
     src: "/icons/tools/eslint.svg",
     title: "ESLint",
@@ -145,5 +155,10 @@ export const technologyDictionary: TechnologyDictionary = {
     src: "/icons/tools/yarn.svg",
     title: "Yarn",
     alt: "Yarn logo",
+  },
+  claudeCode: {
+    src: "/icons/tools/claude-code.svg",
+    title: "Claude Code",
+    alt: "Claude Code logo",
   },
 };

@@ -1,0 +1,34 @@
+{
+  "image": "./social-tip.png",
+  "details": {
+    "title": "Senior backend developer",
+    "organisation": "Social Tip",
+    "location": "London",
+    "startDate": "2026-03-01",
+    "endDate": "2026-07-01",
+    "roleType": "Permanent"
+  },
+  "technologies": [
+    "gcp",
+    "hex",
+    "typescript",
+    "html",
+    "css",
+    "postgresql",
+    "node",
+    "react",
+    "claudeCode",
+    "git",
+    "yarn"
+  ],
+  "description": [
+    "Member of a small team building a social media marketing application, working across both internal tooling ",
+    "for the operations and growth teams and external facing web applications used directly by users, making ",
+    "heavy use of Claude Code throughout the codebase. Built and enhanced interactive Hex dashboards using SQL, ",
+    "dynamic parameters and Markdown integrated with GCP BigQuery, empowering non-technical stakeholders across ",
+    "the business to self-serve operational metrics.",
+    "\nLead developer for a flagship application feature, partnering with the Director of Growth and Design to ",
+    "scope requirements, architected an extensive PostgreSQL schema, managed sprint tickets and assignments, and ",
+    "authored the core backend logic—delivering the feature ahead of schedule with no post-launch issues."
+  ]
+}

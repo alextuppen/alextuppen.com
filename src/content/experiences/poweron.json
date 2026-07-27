@@ -10,15 +10,15 @@
   },
   "technologies": [
     "azure",
+    "powerShell",
+    "cSharp",
     "sccm",
     "dotNet",
     {
       "key": "dotNet",
       "title": ".Net WPF",
       "alt": ".Net WPF logo"
-    },
-    "powerShell",
-    "cSharp"
+    }
   ],
   "description": [
     "Working in a small team has afforded a wide number of opportunities, challenges and responsibilities. ",
